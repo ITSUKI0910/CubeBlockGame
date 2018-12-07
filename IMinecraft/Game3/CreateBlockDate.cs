@@ -47,9 +47,9 @@ namespace Game3
                 }
             }
         }
-        public Dictionary<IVector3, int> GetBlockDate()
+        public ref Dictionary<IVector3, int> GetBlockDate()
         {
-            return blockList;
+            return ref blockList;
         }
         public List<IVector2> GetChankDate()
         {

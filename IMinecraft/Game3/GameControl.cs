@@ -71,14 +71,17 @@ namespace Game3
             this.Content = Content;
             material.Add(BlockID.stone, new Stone());
         }
-        public void Initialize(Dictionary<IVector3, int> wbd, List<IVector2> ChankList)
+        public void Initialize( ref Dictionary<IVector3, int> wbd, List<IVector2> ChankList)
         {
-            WorldBlockDate = wbd;
+
+
+            ///えっと
+            ///ChankList.Add(Chank,new Chank(一チャンク分のデータ))
+
             int x, y, z;
-            bool[] FRBLUD = new bool[6] { false, false, false, false, false, false };
-            foreach (var Chank in ChankList)
+            foreach (var chank in ChankList)
             {
-                int X = Chank.X, Z = Chank.Y;
+                int X = chank.X, Z = chank.Y;
                 for (y = 0; y < 64; y++)
                 {
                     for (x = 0; x < 16; x++)
@@ -87,27 +90,46 @@ namespace Game3
                         {
                             if (wbd[new IVector3(x, y, z)] == 1)
                             {
-                                //この書き方するとなぜかバグる
-                                //FRBLUD[0] = false;
-                                //FRBLUD[1] = false;
-                                //FRBLUD[2] = false;
-                                //FRBLUD[3] = false;
-                                //FRBLUD[4] = false;
-                                //FRBLUD[5] = false;
-                                FRBLUD = new bool[6] { false, false, false, false, false, false };
-                                bool a = false;
-                                if (wbd.ContainsKey(new IVector3(X + x - 1, y, z + Z)) && wbd[new IVector3(X + x - 1, y, z + Z)] != 0) { } else { FRBLUD[0] = true; a = true; }
-                                if (wbd.ContainsKey(new IVector3(X + x, y, z + 1 + Z)) && wbd[new IVector3(X + x, y, z + 1 + Z)] != 0) { } else { FRBLUD[1] = true; a = true; }
-                                if (wbd.ContainsKey(new IVector3(X + x + 1, y, z + Z)) && wbd[new IVector3(X + x + 1, y, z + Z)] != 0) { } else { FRBLUD[2] = true; a = true; }
-                                if (wbd.ContainsKey(new IVector3(X + x, y, z - 1 + Z)) && wbd[new IVector3(X + x, y, z - 1 + Z)] != 0) { } else { FRBLUD[3] = true; a = true; }
-                                if (wbd.ContainsKey(new IVector3(X + x, y + 1, z + Z)) && wbd[new IVector3(X + x, y + 1, z + Z)] != 0) { } else { FRBLUD[4] = true; a = true; }
-                                if (wbd.ContainsKey(new IVector3(X + x, y - 1, z + Z)) && wbd[new IVector3(X + x, y - 1, z + Z)] != 0) { } else { FRBLUD[5] = true; a = true; }
-                                if (a) DrawBlocks.Add(new IVector3(X + x, y, z + Z), new Block(new IVector3(X + x, y, z + Z), BlockID.stone, FRBLUD, Content));
+                                ///このまま行くとブロックデータしか送ることが
+                                ///出来なくなる
+                                ///だからキーをXYZにしてブロックデータで送るか
+                                ///もうブロックのならびの順番は決まっているのだから
+                                ///配列で操るのもあり
+                                ///てか隣のチャンクの扱いも考えなきゃだめなの忘れてたわ
                             }
                         }
                     }
-
                 }
+
+                //for (y = 0; y < 64; y++)
+                //{
+                //    for (x = 0; x < 16; x++)
+                //    {
+                //        for (z = 0; z < 16; z++)
+                //        {
+                //            if (wbd[new IVector3(x, y, z)] == 1)
+                //            {
+                //                //この書き方するとなぜかバグる
+                //                //FRBLUD[0] = false;
+                //                //FRBLUD[1] = false;
+                //                //FRBLUD[2] = false;
+                //                //FRBLUD[3] = false;
+                //                //FRBLUD[4] = false;
+                //                //FRBLUD[5] = false;
+                //                FRBLUD = new bool[6] { false, false, false, false, false, false };
+                //                bool a = false;
+                //                if (wbd.ContainsKey(new IVector3(X + x - 1, y, z + Z)) && wbd[new IVector3(X + x - 1, y, z + Z)] != 0) { } else { FRBLUD[0] = true; a = true; }
+                //                if (wbd.ContainsKey(new IVector3(X + x, y, z + 1 + Z)) && wbd[new IVector3(X + x, y, z + 1 + Z)] != 0) { } else { FRBLUD[1] = true; a = true; }
+                //                if (wbd.ContainsKey(new IVector3(X + x + 1, y, z + Z)) && wbd[new IVector3(X + x + 1, y, z + Z)] != 0) { } else { FRBLUD[2] = true; a = true; }
+                //                if (wbd.ContainsKey(new IVector3(X + x, y, z - 1 + Z)) && wbd[new IVector3(X + x, y, z - 1 + Z)] != 0) { } else { FRBLUD[3] = true; a = true; }
+                //                if (wbd.ContainsKey(new IVector3(X + x, y + 1, z + Z)) && wbd[new IVector3(X + x, y + 1, z + Z)] != 0) { } else { FRBLUD[4] = true; a = true; }
+                //                if (wbd.ContainsKey(new IVector3(X + x, y - 1, z + Z)) && wbd[new IVector3(X + x, y - 1, z + Z)] != 0) { } else { FRBLUD[5] = true; a = true; }
+                //                if (a) DrawBlocks.Add(new IVector3(X + x, y, z + Z), new Block(new IVector3(X + x, y, z + Z), BlockID.stone, FRBLUD, Content));
+                //            }
+                //        }
+                //    }
+
+                //}
             }
         }
         public void LoadContent(GraphicsDevice graphicsDevice)

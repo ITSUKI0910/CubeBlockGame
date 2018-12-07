@@ -35,7 +35,7 @@ namespace Game3
         protected override void Initialize()
         {
             CreateBlockDate CreateBlockDate = new CreateBlockDate();
-            game.Initialize(CreateBlockDate.GetBlockDate(), CreateBlockDate.GetChankDate());
+            game.Initialize(ref CreateBlockDate.GetBlockDate(), CreateBlockDate.GetChankDate());
             base.Initialize();
         }
         protected override void LoadContent()
