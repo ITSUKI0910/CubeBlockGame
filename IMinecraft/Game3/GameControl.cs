@@ -62,7 +62,6 @@ namespace Game3
             foreach (var chank in chanklist)
             {
                 ChankList.Add(chank, new Chank());
-                int X = chank.X, Z = chank.Y;
                 Dictionary<IVector3, int> Initialize_blockList = new Dictionary<IVector3, int>();
 
                 for (int y = 0; y < 64; y++)
@@ -74,12 +73,12 @@ namespace Game3
                             if (blockList[new IVector3(x, y, z)] == 1)
                             {
                                 ///これをやると隣にブロックがあるかどうかがわかる
-                                if (blockList.ContainsKey(new IVector3(X + x - 1, y, z + Z)) && blockList[new IVector3(X + x - 1, y, z + Z)] != 0) { } else { ChankList[chank].Add( x, y, z, 1); }
-                                if (blockList.ContainsKey(new IVector3(X + x, y, z + 1 + Z)) && blockList[new IVector3(X + x, y, z + 1 + Z)] != 0) { } else { ChankList[chank].Add( x, y, z, 2); }
-                                if (blockList.ContainsKey(new IVector3(X + x + 1, y, z + Z)) && blockList[new IVector3(X + x + 1, y, z + Z)] != 0) { } else { ChankList[chank].Add( x, y, z, 3); }
-                                if (blockList.ContainsKey(new IVector3(X + x, y, z - 1 + Z)) && blockList[new IVector3(X + x, y, z - 1 + Z)] != 0) { } else { ChankList[chank].Add( x, y, z, 4); }
-                                if (blockList.ContainsKey(new IVector3(X + x, y + 1, z + Z)) && blockList[new IVector3(X + x, y + 1, z + Z)] != 0) { } else { ChankList[chank].Add( x, y, z, 5); }
-                                if (blockList.ContainsKey(new IVector3(X + x, y - 1, z + Z)) && blockList[new IVector3(X + x, y - 1, z + Z)] != 0) { } else { ChankList[chank].Add( x, y, z, 6); }
+                                if (blockList.ContainsKey(new IVector3(x - 1, y, z)) && blockList[new IVector3(x - 1, y, z)] != 0) { } else { ChankList[chank].Add( x, y, z, 1); }
+                                if (blockList.ContainsKey(new IVector3(x, y, z + 1)) && blockList[new IVector3(x, y, z + 1)] != 0) { } else { ChankList[chank].Add( x, y, z, 2); }
+                                if (blockList.ContainsKey(new IVector3(x + 1, y, z)) && blockList[new IVector3(x + 1, y, z)] != 0) { } else { ChankList[chank].Add( x, y, z, 3); }
+                                if (blockList.ContainsKey(new IVector3(x, y, z - 1)) && blockList[new IVector3(x, y, z - 1)] != 0) { } else { ChankList[chank].Add( x, y, z, 4); }
+                                if (blockList.ContainsKey(new IVector3(x, y + 1, z)) && blockList[new IVector3(x, y + 1, z)] != 0) { } else { ChankList[chank].Add( x, y, z, 5); }
+                                if (blockList.ContainsKey(new IVector3(x, y - 1, z)) && blockList[new IVector3(x, y - 1, z)] != 0) { } else { ChankList[chank].Add( x, y, z, 6); }
                             }
                             Initialize_blockList.Add(new IVector3(x, y, z), blockList[new IVector3(x, y, z)]);
                         }
@@ -87,6 +86,7 @@ namespace Game3
                 }
                 ChankList[chank].Initialize(Initialize_blockList);
             }
+            ChankList.Remove(chanklist[1]);
         }
         public void LoadContent(GraphicsDevice graphicsDevice)
         {
@@ -118,6 +118,7 @@ namespace Game3
         Vector3 CameraPosition;
         public void Update()
         {
+
             KeyboardState keyboardState = Keyboard.GetState();
             // マウスが画面中央からどれだけ移動したかを取得し、値を変化させる
             // YawはY軸を中心とした横回転
