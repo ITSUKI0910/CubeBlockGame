@@ -32,27 +32,12 @@ namespace Game3
     /// 
     /// 
     /// </summary>
-    class Chank
-    {
-        /// <summary>
-        /// やっぱチャンクの中に入れなきゃいけないのは
-        /// そのチャンクのブロックデータ
-        /// 点データ
-        /// 面データ
-        /// 
-        /// あとスタティック化させた本当のブロックデータを持たせる
-        /// </summary>
-        private VertexPositionTexture[] ten;
-        private int[] men;
-    }
     class GameControl
     {
         ContentManager Content;
         GraphicsDevice GraphicsDevice;
         BasicEffect effect;
         private Dictionary<BlockID, BlockMaterialawd> material = new Dictionary<BlockID, BlockMaterialawd>();
-        private Dictionary<IVector3, int> WorldBlockDate = new Dictionary<IVector3, int>();
-        private Dictionary<IVector3, Block> DrawBlocks = new Dictionary<IVector3, Block>();
         Vector3 _position = new Vector3(0, 68, 0);
 
         /// <summary>
@@ -65,71 +50,42 @@ namespace Game3
         /// やっぱブロックデータはチャンクごとに持たせる
         /// 方向性で生きたい
         /// </summary>
+        ///　これを素材にしてここで管理しなければなにもうまくいかない気がする
         private Dictionary<IVector2, Chank> ChankList = new Dictionary<IVector2, Chank>();
         public GameControl(ContentManager Content)
         {
             this.Content = Content;
-            material.Add(BlockID.stone, new Stone());
+            //material.Add(BlockID.stone, new Stone());
         }
-        public void Initialize( ref Dictionary<IVector3, int> wbd, List<IVector2> ChankList)
+        public void Initialize(ref Dictionary<IVector3, int> blockList, ref List<IVector2> chanklist)
         {
-
-
-            ///えっと
-            ///ChankList.Add(Chank,new Chank(一チャンク分のデータ))
-
-            int x, y, z;
-            foreach (var chank in ChankList)
+            foreach (var chank in chanklist)
             {
+                ChankList.Add(chank, new Chank());
                 int X = chank.X, Z = chank.Y;
-                for (y = 0; y < 64; y++)
+                Dictionary<IVector3, int> Initialize_blockList = new Dictionary<IVector3, int>();
+
+                for (int y = 0; y < 64; y++)
                 {
-                    for (x = 0; x < 16; x++)
+                    for (int x = chank.X; x < chank.X + 16; x++)
                     {
-                        for (z = 0; z < 16; z++)
+                        for (int z = chank.Y; z < chank.Y + 16; z++)
                         {
-                            if (wbd[new IVector3(x, y, z)] == 1)
+                            if (blockList[new IVector3(x, y, z)] == 1)
                             {
-                                ///このまま行くとブロックデータしか送ることが
-                                ///出来なくなる
-                                ///だからキーをXYZにしてブロックデータで送るか
-                                ///もうブロックのならびの順番は決まっているのだから
-                                ///配列で操るのもあり
-                                ///てか隣のチャンクの扱いも考えなきゃだめなの忘れてたわ
+                                ///これをやると隣にブロックがあるかどうかがわかる
+                                if (blockList.ContainsKey(new IVector3(X + x - 1, y, z + Z)) && blockList[new IVector3(X + x - 1, y, z + Z)] != 0) { } else { ChankList[chank].Add( x, y, z, 1); }
+                                if (blockList.ContainsKey(new IVector3(X + x, y, z + 1 + Z)) && blockList[new IVector3(X + x, y, z + 1 + Z)] != 0) { } else { ChankList[chank].Add( x, y, z, 2); }
+                                if (blockList.ContainsKey(new IVector3(X + x + 1, y, z + Z)) && blockList[new IVector3(X + x + 1, y, z + Z)] != 0) { } else { ChankList[chank].Add( x, y, z, 3); }
+                                if (blockList.ContainsKey(new IVector3(X + x, y, z - 1 + Z)) && blockList[new IVector3(X + x, y, z - 1 + Z)] != 0) { } else { ChankList[chank].Add( x, y, z, 4); }
+                                if (blockList.ContainsKey(new IVector3(X + x, y + 1, z + Z)) && blockList[new IVector3(X + x, y + 1, z + Z)] != 0) { } else { ChankList[chank].Add( x, y, z, 5); }
+                                if (blockList.ContainsKey(new IVector3(X + x, y - 1, z + Z)) && blockList[new IVector3(X + x, y - 1, z + Z)] != 0) { } else { ChankList[chank].Add( x, y, z, 6); }
                             }
+                            Initialize_blockList.Add(new IVector3(x, y, z), blockList[new IVector3(x, y, z)]);
                         }
                     }
                 }
-
-                //for (y = 0; y < 64; y++)
-                //{
-                //    for (x = 0; x < 16; x++)
-                //    {
-                //        for (z = 0; z < 16; z++)
-                //        {
-                //            if (wbd[new IVector3(x, y, z)] == 1)
-                //            {
-                //                //この書き方するとなぜかバグる
-                //                //FRBLUD[0] = false;
-                //                //FRBLUD[1] = false;
-                //                //FRBLUD[2] = false;
-                //                //FRBLUD[3] = false;
-                //                //FRBLUD[4] = false;
-                //                //FRBLUD[5] = false;
-                //                FRBLUD = new bool[6] { false, false, false, false, false, false };
-                //                bool a = false;
-                //                if (wbd.ContainsKey(new IVector3(X + x - 1, y, z + Z)) && wbd[new IVector3(X + x - 1, y, z + Z)] != 0) { } else { FRBLUD[0] = true; a = true; }
-                //                if (wbd.ContainsKey(new IVector3(X + x, y, z + 1 + Z)) && wbd[new IVector3(X + x, y, z + 1 + Z)] != 0) { } else { FRBLUD[1] = true; a = true; }
-                //                if (wbd.ContainsKey(new IVector3(X + x + 1, y, z + Z)) && wbd[new IVector3(X + x + 1, y, z + Z)] != 0) { } else { FRBLUD[2] = true; a = true; }
-                //                if (wbd.ContainsKey(new IVector3(X + x, y, z - 1 + Z)) && wbd[new IVector3(X + x, y, z - 1 + Z)] != 0) { } else { FRBLUD[3] = true; a = true; }
-                //                if (wbd.ContainsKey(new IVector3(X + x, y + 1, z + Z)) && wbd[new IVector3(X + x, y + 1, z + Z)] != 0) { } else { FRBLUD[4] = true; a = true; }
-                //                if (wbd.ContainsKey(new IVector3(X + x, y - 1, z + Z)) && wbd[new IVector3(X + x, y - 1, z + Z)] != 0) { } else { FRBLUD[5] = true; a = true; }
-                //                if (a) DrawBlocks.Add(new IVector3(X + x, y, z + Z), new Block(new IVector3(X + x, y, z + Z), BlockID.stone, FRBLUD, Content));
-                //            }
-                //        }
-                //    }
-
-                //}
+                ChankList[chank].Initialize(Initialize_blockList);
             }
         }
         public void LoadContent(GraphicsDevice graphicsDevice)
@@ -151,10 +107,6 @@ namespace Game3
                 1000     //カメラからこれより遠い物体は画面に映らない
                 )
             };
-            foreach (Block block in DrawBlocks.Values)
-            {
-                block.LoadContent(graphicsDevice);
-            }
             effect.Texture = Content.Load<Texture2D>("grass");
         }
         public void UnloadContent()
@@ -278,95 +230,95 @@ namespace Game3
             effect.View = Matrix.CreateLookAt(_position, b, new Vector3(0, 1, 0));
 
             //ブロックを消す
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-            {
-                int kx = (int)Math.Truncate(b.X);
-                int ky = (int)Math.Truncate(b.Y);
-                int kz = (int)Math.Truncate(b.Z);
-                if (WorldBlockDate.ContainsKey(new IVector3(kx, ky, kz)) && WorldBlockDate[new IVector3(kx, ky, kz)] != 0)
-                {
-                    WorldBlockDate[new IVector3(kx, ky, kz)] = 0;
-                    if (DrawBlocks.ContainsKey(new IVector3(kx, ky, kz))) DrawBlocks.Remove(new IVector3(kx, ky, kz));
-                    IVector3 vec3 = new IVector3(kx + 1, ky, kz);
-                    if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
-                    {
-                        if (DrawBlocks.ContainsKey(vec3))
-                        {
-                            DrawBlocks[vec3].Front();
-                        }
-                        else
-                        {
-                            DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { true, false, false, false, false, false }, Content));
-                            DrawBlocks[vec3].LoadContent(GraphicsDevice);
-                        }
-                    }
-                    vec3 = new IVector3(kx, ky, kz - 1);
-                    if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
-                    {
-                        if (DrawBlocks.ContainsKey(vec3))
-                        {
-                            DrawBlocks[vec3].Right();
-                        }
-                        else
-                        {
-                            DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { false, true, false, false, false, false }, Content));
-                            DrawBlocks[vec3].LoadContent(GraphicsDevice);
-                        }
-                    }
-                    vec3 = new IVector3(kx - 1, ky, kz);
-                    if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
-                    {
-                        if (DrawBlocks.ContainsKey(vec3))
-                        {
-                            DrawBlocks[vec3].Back();
-                        }
-                        else
-                        {
-                            DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { false, false, true, false, false, false }, Content));
-                            DrawBlocks[vec3].LoadContent(GraphicsDevice);
-                        }
-                    }
-                    vec3 = new IVector3(kx, ky, kz + 1);
-                    if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
-                    {
-                        if (DrawBlocks.ContainsKey(vec3))
-                        {
-                            DrawBlocks[vec3].Left();
-                        }
-                        else
-                        {
-                            DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { false, false, false, true, false, false }, Content));
-                            DrawBlocks[vec3].LoadContent(GraphicsDevice);
-                        }
-                    }
-                    vec3 = new IVector3(kx, ky - 1, kz);
-                    if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
-                    {
-                        if (DrawBlocks.ContainsKey(vec3))
-                        {
-                            DrawBlocks[vec3].Up();
-                        }
-                        else
-                        {
-                            DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { false, false, false, false, true, false }, Content));
-                            DrawBlocks[vec3].LoadContent(GraphicsDevice);
-                        }
-                    }
-                    vec3 = new IVector3(kx, ky + 1, kz);
-                    if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
-                    {
-                        if (DrawBlocks.ContainsKey(vec3))
-                        {
-                            DrawBlocks[vec3].Down();
-                        }
-                        else
-                        {
-                            DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { false, false, false, false, false, true }, Content));
-                            DrawBlocks[vec3].LoadContent(GraphicsDevice);
-                        }
-                    }
-                }
-            }
+            //if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            //{
+            //    int kx = (int)Math.Truncate(b.X);
+            //    int ky = (int)Math.Truncate(b.Y);
+            //    int kz = (int)Math.Truncate(b.Z);
+            //    if (WorldBlockDate.ContainsKey(new IVector3(kx, ky, kz)) && WorldBlockDate[new IVector3(kx, ky, kz)] != 0)
+            //    {
+            //        WorldBlockDate[new IVector3(kx, ky, kz)] = 0;
+            //        if (DrawBlocks.ContainsKey(new IVector3(kx, ky, kz))) DrawBlocks.Remove(new IVector3(kx, ky, kz));
+            //        IVector3 vec3 = new IVector3(kx + 1, ky, kz);
+            //        if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
+            //        {
+            //            if (DrawBlocks.ContainsKey(vec3))
+            //            {
+            //                DrawBlocks[vec3].Front();
+            //            }
+            //            else
+            //            {
+            //                DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { true, false, false, false, false, false }, Content));
+            //                DrawBlocks[vec3].LoadContent(GraphicsDevice);
+            //            }
+            //        }
+            //        vec3 = new IVector3(kx, ky, kz - 1);
+            //        if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
+            //        {
+            //            if (DrawBlocks.ContainsKey(vec3))
+            //            {
+            //                DrawBlocks[vec3].Right();
+            //            }
+            //            else
+            //            {
+            //                DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { false, true, false, false, false, false }, Content));
+            //                DrawBlocks[vec3].LoadContent(GraphicsDevice);
+            //            }
+            //        }
+            //        vec3 = new IVector3(kx - 1, ky, kz);
+            //        if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
+            //        {
+            //            if (DrawBlocks.ContainsKey(vec3))
+            //            {
+            //                DrawBlocks[vec3].Back();
+            //            }
+            //            else
+            //            {
+            //                DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { false, false, true, false, false, false }, Content));
+            //                DrawBlocks[vec3].LoadContent(GraphicsDevice);
+            //            }
+            //        }
+            //        vec3 = new IVector3(kx, ky, kz + 1);
+            //        if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
+            //        {
+            //            if (DrawBlocks.ContainsKey(vec3))
+            //            {
+            //                DrawBlocks[vec3].Left();
+            //            }
+            //            else
+            //            {
+            //                DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { false, false, false, true, false, false }, Content));
+            //                DrawBlocks[vec3].LoadContent(GraphicsDevice);
+            //            }
+            //        }
+            //        vec3 = new IVector3(kx, ky - 1, kz);
+            //        if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
+            //        {
+            //            if (DrawBlocks.ContainsKey(vec3))
+            //            {
+            //                DrawBlocks[vec3].Up();
+            //            }
+            //            else
+            //            {
+            //                DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { false, false, false, false, true, false }, Content));
+            //                DrawBlocks[vec3].LoadContent(GraphicsDevice);
+            //            }
+            //        }
+            //        vec3 = new IVector3(kx, ky + 1, kz);
+            //        if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
+            //        {
+            //            if (DrawBlocks.ContainsKey(vec3))
+            //            {
+            //                DrawBlocks[vec3].Down();
+            //            }
+            //            else
+            //            {
+            //                DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { false, false, false, false, false, true }, Content));
+            //                DrawBlocks[vec3].LoadContent(GraphicsDevice);
+            //            }
+            //        }
+            //    }
+            //}
             ///ブロックを置く
             //if (Mouse.GetState().RightButton == ButtonState.Pressed)
             //{
@@ -400,50 +352,17 @@ namespace Game3
             //    }
             //}
         }
-
-        /// <summary>
-        /// カメラポジションや
-        /// ブロックの配列を使う
-        /// 描画部分
-        /// 
-        /// 持ってくるものは
-        /// 点データと結ぶデータとテクスチャデータ
-        /// </summary>
         public void Draw()
         {
-            //
-            //大元のブロックにtextureを配列に当てはめてデータを取り出す
-            //ブロックIDとテクスチャの配列と点データと結ぶデータ
-            ///
-            ///このやり方はコピーが多いいから　重すぎる
-            ///
             foreach (EffectPass pass in effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                foreach (Block block in DrawBlocks.Values)
+                foreach (Chank block in ChankList.Values)
                 {
-                    block.Draw(ref effect, material[block.ID]);
+                    block.Draw(GraphicsDevice);
                 }
             }
-                //int i = 0;
-                ////string[] texture = material[block.ID].Texture(block.DrawPossible());
-                //VertexPositionTexture[] vertices = block.Vertex();
-                //int[] indices = block.Indices();
-                //foreach (EffectPass pass in effect.CurrentTechnique.Passes)
-                //{
-                //    effect.Texture = Content.Load<Texture2D>("grass"); ;//もってきたテクスチャの配列を入れる？ｗ
-                //                                                        //順番は前右後ろ左上下と固定してる
-                //    pass.Apply();
-                //    GraphicsDevice.DrawUserIndexedPrimitives(
-                //        PrimitiveType.TriangleList,
-                //        vertices,
-                //        0,
-                //        vertices.Length,
-                //        indices,
-                //        0,
-                //        indices.Length / 3);
-                //    i++;
-                //}
+
            
         }
     }

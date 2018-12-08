@@ -6,6 +6,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
+/// <summary>
+/// 良さそう
+/// https://monobook.org/wiki/MonoGame%E3%81%AE3D%E3%83%A2%E3%83%87%E3%83%AB%E3%82%92%E7%AE%A1%E7%90%86%E6%8F%8F%E7%94%BB%E3%81%99%E3%82%8B%E3%82%AF%E3%83%A9%E3%82%B9%E3%82%92%E4%BD%9C%E3%82%8B
+/// </summary>
 namespace Game3
 {
     /// <summary>
@@ -35,7 +39,7 @@ namespace Game3
         protected override void Initialize()
         {
             CreateBlockDate CreateBlockDate = new CreateBlockDate();
-            game.Initialize(ref CreateBlockDate.GetBlockDate(), CreateBlockDate.GetChankDate());
+            game.Initialize(ref CreateBlockDate.GetBlockDate(),ref CreateBlockDate.chank());
             base.Initialize();
         }
         protected override void LoadContent()

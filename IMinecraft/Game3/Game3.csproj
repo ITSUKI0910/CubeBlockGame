@@ -47,6 +47,7 @@
     <Compile Include="BlockMaterial\BlockMaterial.cs" />
     <Compile Include="BlockMaterialawd.cs" />
     <Compile Include="BlockMaterial\BlockMaterialID.cs" />
+    <Compile Include="Chank.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="CreateBlockDate.cs" />
     <Compile Include="BlockMaterial\DownMaterial.cs" />

@@ -13,8 +13,8 @@ namespace Game3
 
         public IVector2(int X, int Y)
         {
-            this.Y = Y;
             this.X = X;
+            this.Y = Y;
         }
         public bool Equals(IVector4 other)
         {
