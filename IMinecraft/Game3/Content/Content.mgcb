@@ -85,7 +85,7 @@
 /processorParam:TextureFormat=Color
 /build:stone_6.png
 
-#begin grass.bmp
+#begin grass2.bmp
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -95,5 +95,5 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:grass.bmp
+/build:grass2.bmp
 

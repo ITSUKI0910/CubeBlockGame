@@ -142,7 +142,6 @@ P:\ゲーム製作\IMinecraft\IMinecraft\Game3\obj\x86\Debug\Game3.csprojResolve
 P:\ゲーム製作\IMinecraft\IMinecraft\Game3\obj\x86\Debug\Game3.csproj.CoreCompileInputs.cache
 P:\ゲーム製作\IMinecraft\IMinecraft\Game3\obj\x86\Debug\Game3.exe
 P:\ゲーム製作\IMinecraft\IMinecraft\Game3\obj\x86\Debug\Game3.pdb
-P:\ゲーム製作\IMinecraft\IMinecraft\Game3\bin\Windows\x86\Debug\Content\grass.xnb
 P:\ゲーム製作\IMinecraft\IMinecraft\Game3\bin\Windows\x86\Debug\Content\stone_1.xnb
 P:\ゲーム製作\IMinecraft\IMinecraft\Game3\bin\Windows\x86\Debug\Content\stone_2.xnb
 P:\ゲーム製作\IMinecraft\IMinecraft\Game3\bin\Windows\x86\Debug\Content\stone_3.xnb
@@ -169,3 +168,4 @@ P:\ゲーム製作\IMinecraft\IMinecraft\Game3\bin\Windows\x86\Debug\SharpDX.Dir
 P:\ゲーム製作\IMinecraft\IMinecraft\Game3\bin\Windows\x86\Debug\SharpDX.Direct2D1.xml
 P:\ゲーム製作\IMinecraft\IMinecraft\Game3\bin\Windows\x86\Debug\SharpDX.XInput.xml
 P:\ゲーム製作\IMinecraft\IMinecraft\Game3\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
+P:\ゲーム製作\IMinecraft\IMinecraft\Game3\bin\Windows\x86\Debug\Content\grass2.xnb

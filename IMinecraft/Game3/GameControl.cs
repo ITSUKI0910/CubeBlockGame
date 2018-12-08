@@ -86,7 +86,6 @@ namespace Game3
                 }
                 ChankList[chank].Initialize(Initialize_blockList);
             }
-            ChankList.Remove(chanklist[1]);
         }
         public void LoadContent(GraphicsDevice graphicsDevice)
         {
@@ -107,7 +106,8 @@ namespace Game3
                 1000     //カメラからこれより遠い物体は画面に映らない
                 )
             };
-            effect.Texture = Content.Load<Texture2D>("grass");
+            effect.Texture = Content.Load<Texture2D>("grass2");
+            //48*48のサイズ
         }
         public void UnloadContent()
         {
@@ -145,102 +145,58 @@ namespace Game3
                 //int X1 = (int)Math.Truncate(_position.X + CollisionSide);
                 //int Z0 = (int)Math.Truncate(_position.Z - CollisionSide);
                 //int Z1 = (int)Math.Truncate(_position.Z + CollisionSide);
-                //bool ITSUKI = false;
-                //if (X0 == X1)
-                //{
-                //    if (Z0 == Z1)
-                //    {
-                //        if (blockList.ContainsKey(new IVector3(X0, Y, Z0)) && blockList[new IVector3(X0, Y, Z0)] != 0) ITSUKI = true;
-                //    }
-                //    else
-                //    {
-                //        if (blockList.ContainsKey(new IVector3(X0, Y, Z0)) && blockList[new IVector3(X0, Y, Z0)] != 0) { ITSUKI = true; }
-                //        else if (blockList.ContainsKey(new IVector3(X0, Y, Z1)) && blockList[new IVector3(X0, Y, Z1)] != 0) ITSUKI = true;
-                //    }
-                //}
-                //else
-                //{
-                //    if (Z0 == Z1)
-                //    {
-                //        if (blockList.ContainsKey(new IVector3(X0, Y, Z0)) && blockList[new IVector3(X0, Y, Z0)] != 0) { ITSUKI = true; }
-                //        else if (blockList.ContainsKey(new IVector3(X1, Y, Z0)) && blockList[new IVector3(X1, Y, Z0)] != 0) ITSUKI = true;
-                //    }
-                //    else
-                //    {
-                //        if (blockList.ContainsKey(new IVector3(X0, Y, Z0)) && blockList[new IVector3(X0, Y, Z0)] != 0) { ITSUKI = true; }
-                //        else if (blockList.ContainsKey(new IVector3(X1, Y, Z0)) && blockList[new IVector3(X1, Y, Z0)] != 0) { ITSUKI = true; }
-                //        else if (blockList.ContainsKey(new IVector3(X0, Y, Z1)) && blockList[new IVector3(X0, Y, Z1)] != 0) { ITSUKI = true; }
-                //        else if (blockList.ContainsKey(new IVector3(X1, Y, Z1)) && blockList[new IVector3(X1, Y, Z1)] != 0) { ITSUKI = true; }
-                //    }
-                //}
-                //if (ITSUKI) _position = new Vector3(_position.X, Y + 1 + CollisionDown, _position.Z);
             }
             if (keyboardState.IsKeyDown(Keys.Space))
             {
                 //上に上がったときの処理
                 _position += new Vector3(0, 0.5f, 0);
-                //int Y = (int)Math.Truncate(_position.Y + CollisionUp);
-                //int X0 = (int)Math.Truncate(_position.X - CollisionSide);
-                //int X1 = (int)Math.Truncate(_position.X + CollisionSide);
-                //int Z0 = (int)Math.Truncate(_position.Z - CollisionSide);
-                //int Z1 = (int)Math.Truncate(_position.Z + CollisionSide);
-                //bool ITSUKI = false;
-                //if (X0 == X1)
-                //{
-                //    if (Z0 == Z1)
-                //    {
-                //        if (blockList.ContainsKey(new IVector3(X0, Y, Z0)) && blockList[new IVector3(X0, Y, Z0)] != 0) ITSUKI = true;
-                //    }
-                //    else
-                //    {
-                //        if (blockList.ContainsKey(new IVector3(X0, Y, Z0)) && blockList[new IVector3(X0, Y, Z0)] != 0)
-                //        {
-                //            ITSUKI = true;
-                //        }
-                //        else if (blockList.ContainsKey(new IVector3(X0, Y, Z1)) && blockList[new IVector3(X0, Y, Z1)] != 0)
-                //        {
-                //            ITSUKI = true;
-                //        }
-                //    }
-                //}
-                //else
-                //{
-                //    if (Z0 == Z1)
-                //    {
-                //        if (blockList.ContainsKey(new IVector3(X0, Y, Z0)) && blockList[new IVector3(X0, Y, Z0)] != 0)
-                //        {
-                //            ITSUKI = true;
-                //        }
-                //        else if (blockList.ContainsKey(new IVector3(X1, Y, Z0)) && blockList[new IVector3(X1, Y, Z0)] != 0)
-                //        {
-                //            ITSUKI = true;
-                //        }
-                //    }
-                //    else
-                //    {
-                //        if (blockList.ContainsKey(new IVector3(X0, Y, Z0)) && blockList[new IVector3(X0, Y, Z0)] != 0) { ITSUKI = true; }
-                //        else if (blockList.ContainsKey(new IVector3(X1, Y, Z0)) && blockList[new IVector3(X1, Y, Z0)] != 0) { ITSUKI = true; }
-                //        else if (blockList.ContainsKey(new IVector3(X0, Y, Z1)) && blockList[new IVector3(X0, Y, Z1)] != 0) { ITSUKI = true; }
-                //        else if (blockList.ContainsKey(new IVector3(X1, Y, Z1)) && blockList[new IVector3(X1, Y, Z1)] != 0) { ITSUKI = true; }
-                //    }
-                //}
-                //if (ITSUKI) _position = new Vector3(_position.X, Y - CollisionUp, _position.Z);
             }
             // ビュー行列を作成
             Vector3 b = _position + CameraPosition * 2.5f;// 0.3f;
             effect.View = Matrix.CreateLookAt(_position, b, new Vector3(0, 1, 0));
 
             //ブロックを消す
-            //if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-            //{
-            //    int kx = (int)Math.Truncate(b.X);
-            //    int ky = (int)Math.Truncate(b.Y);
-            //    int kz = (int)Math.Truncate(b.Z);
-            //    if (WorldBlockDate.ContainsKey(new IVector3(kx, ky, kz)) && WorldBlockDate[new IVector3(kx, ky, kz)] != 0)
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
+                //Player_Mouse_X
+                int pmx = (int)Math.Truncate(b.X);
+                int pmy = (int)Math.Truncate(b.Y);
+                int pmz = (int)Math.Truncate(b.Z);
+                double c_x = pmx / 16;
+                double c_y = pmz / 16;
+                int chank_x = (int)Math.Truncate(c_x) * 16;
+                int chank_y = (int)Math.Truncate(c_y) * 16;
+                ///ここで左右のブロックの状態を見てやる
+                ///ただ上下は送った先で処理できる
+                ///処理の候補
+                ///+-して同じようにダブル型にして小数点をけして検索かけて
+                ///そこの数字を貰って来て
+                ///比較してやるほうほう
+                ///
+                ///+-して他のチャンクなのかを確認
+                ///して他のチャンクだったら16+するだけ
+                ///
+                if (pmx == chank_x) {
+                    pmx--;//時の処理を書く
+                }
+                else if( pmx == chank_x + 15)
+                {
+                    pmx++;//時の処理を書く
+                }
+
+
+                ChankList[new IVector2(chank_x, chank_y)].Add(1, 2, 3, 1);
+            }
+
+
+
+
+
+            //    if (WorldBlockDate.ContainsKey(new IVector3(player_mouse_x, player_mouse_y, player_mouse_z)) && WorldBlockDate[new IVector3(player_mouse_x, player_mouse_y, player_mouse_z)] != 0)
             //    {
-            //        WorldBlockDate[new IVector3(kx, ky, kz)] = 0;
-            //        if (DrawBlocks.ContainsKey(new IVector3(kx, ky, kz))) DrawBlocks.Remove(new IVector3(kx, ky, kz));
-            //        IVector3 vec3 = new IVector3(kx + 1, ky, kz);
+            //        WorldBlockDate[new IVector3(player_mouse_x, player_mouse_y, player_mouse_z)] = 0;
+            //        if (DrawBlocks.ContainsKey(new IVector3(player_mouse_x, player_mouse_y, player_mouse_z))) DrawBlocks.Remove(new IVector3(player_mouse_x, player_mouse_y, player_mouse_z));
+            //        IVector3 vec3 = new IVector3(player_mouse_x + 1, player_mouse_y, player_mouse_z);
             //        if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
             //        {
             //            if (DrawBlocks.ContainsKey(vec3))
@@ -253,7 +209,7 @@ namespace Game3
             //                DrawBlocks[vec3].LoadContent(GraphicsDevice);
             //            }
             //        }
-            //        vec3 = new IVector3(kx, ky, kz - 1);
+            //        vec3 = new IVector3(player_mouse_x, player_mouse_y, player_mouse_z - 1);
             //        if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
             //        {
             //            if (DrawBlocks.ContainsKey(vec3))
@@ -266,7 +222,7 @@ namespace Game3
             //                DrawBlocks[vec3].LoadContent(GraphicsDevice);
             //            }
             //        }
-            //        vec3 = new IVector3(kx - 1, ky, kz);
+            //        vec3 = new IVector3(player_mouse_x - 1, player_mouse_y, player_mouse_z);
             //        if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
             //        {
             //            if (DrawBlocks.ContainsKey(vec3))
@@ -279,7 +235,7 @@ namespace Game3
             //                DrawBlocks[vec3].LoadContent(GraphicsDevice);
             //            }
             //        }
-            //        vec3 = new IVector3(kx, ky, kz + 1);
+            //        vec3 = new IVector3(player_mouse_x, player_mouse_y, player_mouse_z + 1);
             //        if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
             //        {
             //            if (DrawBlocks.ContainsKey(vec3))
@@ -292,7 +248,7 @@ namespace Game3
             //                DrawBlocks[vec3].LoadContent(GraphicsDevice);
             //            }
             //        }
-            //        vec3 = new IVector3(kx, ky - 1, kz);
+            //        vec3 = new IVector3(player_mouse_x, player_mouse_y - 1, player_mouse_z);
             //        if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
             //        {
             //            if (DrawBlocks.ContainsKey(vec3))
@@ -305,7 +261,7 @@ namespace Game3
             //                DrawBlocks[vec3].LoadContent(GraphicsDevice);
             //            }
             //        }
-            //        vec3 = new IVector3(kx, ky + 1, kz);
+            //        vec3 = new IVector3(player_mouse_x, player_mouse_y + 1, player_mouse_z);
             //        if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
             //        {
             //            if (DrawBlocks.ContainsKey(vec3))
