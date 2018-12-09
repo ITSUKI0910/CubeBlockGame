@@ -159,33 +159,84 @@ namespace Game3
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
                 //Player_Mouse_X
-                int pmx = (int)Math.Truncate(b.X);
+                int pmx = (int)Math.Truncate(b.X);//上下
                 int pmy = (int)Math.Truncate(b.Y);
-                int pmz = (int)Math.Truncate(b.Z);
+                int pmz = (int)Math.Truncate(b.Z);//左右
                 double c_x = pmx / 16;
-                double c_y = pmz / 16;
+                double c_z = pmz / 16;
                 int chank_x = (int)Math.Truncate(c_x) * 16;
-                int chank_y = (int)Math.Truncate(c_y) * 16;
+                int chank_z = (int)Math.Truncate(c_z) * 16;
+                if (ChankList.ContainsKey(new IVector2(chank_x, chank_z)))
+                {
+
+                    //////////////////////////////////////////////////////////////////////
+                    //2番目のやつ
+                    //最終的に消す処理だから
+                    //となりに描画させるプログラム
+                    //pmxの入ってるチャンクの原点を見てるから　小数点以下を消した時同じになるから
+                    //上　右　下　左　の順番でやる
+                    if (pmx == chank_x && pmz == chank_z)//左下
+                    {
+                        ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmz++, 0, 0);
+                        ChankList[new IVector2(chank_x, chank_z)].Add(pmx++, pmz, 0, 0);
+                        if (ChankList.ContainsKey(new IVector2(chank_x - 16, chank_z))) ChankList[new IVector2(chank_x - 16, chank_z)].Add(pmx--, pmz, 0, 0);
+                        if (ChankList.ContainsKey(new IVector2(chank_x, chank_z - 16))) ChankList[new IVector2(chank_x, chank_z - 16)].Add(pmx, pmz--, 0, 0);
+                    }
+                    else
+                    if (pmx == chank_x + 15 && pmz == chank_z)//左上
+                    {
+                        if (ChankList.ContainsKey(new IVector2(chank_x + 16, chank_z))) ChankList[new IVector2(chank_x + 16, chank_z)].Add(pmx++, pmz, 0, 0);
+                        ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmz++, 0, 0);
+                        ChankList[new IVector2(chank_x, chank_z)].Add(pmx--, pmz, 0, 0);
+                        if (ChankList.ContainsKey(new IVector2(chank_x, chank_z - 16))) ChankList[new IVector2(chank_x, chank_z - 16)].Add(pmx, pmz--, 0, 0);
+                    }
+                    else
+                    if (pmx == chank_x && pmz == chank_z + 15)//右下
+                    {
+                        ChankList[new IVector2(chank_x, chank_z)].Add(pmx++, pmz, 0, 0);
+                        if (ChankList.ContainsKey(new IVector2(chank_x, chank_z + 16))) ChankList[new IVector2(chank_x, chank_z + 16)].Add(pmx, pmz++, 0, 0);
+                        if (ChankList.ContainsKey(new IVector2(chank_x - 16, chank_z))) ChankList[new IVector2(chank_x - 16, chank_z)].Add(pmx--, pmz, 0, 0);
+                        ChankList[new IVector2(chank_x, chank_z - 16)].Add(pmx, pmz--, 0, 0);
+                    }
+                    else
+                    if (pmx == chank_x + 15&& pmz == chank_z + 15)//右上
+                    {
+                        if (ChankList.ContainsKey(new IVector2(chank_x + 16, chank_z))) ChankList[new IVector2(chank_x + 16, chank_z)].Add(pmx++, pmz, 0, 0);
+                        if (ChankList.ContainsKey(new IVector2(chank_x, chank_z + 16))) ChankList[new IVector2(chank_x, chank_z + 16)].Add(pmx, pmz++, 0, 0);
+                        ChankList[new IVector2(chank_x, chank_z)].Add(pmx--, pmz, 0, 0);
+                        ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmz++, 0, 0);
+                    }
+                    else
+                    {
+                        ChankList[new IVector2(chank_x, chank_z)].Add(pmx++, pmz, 0, 0);
+                        ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmz++, 0, 0);
+                        ChankList[new IVector2(chank_x, chank_z)].Add(pmx--, pmz, 0, 0);
+                        ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmz--, 0, 0);
+                    }
+                        ChankList[new IVector2(chank_x, chank_z)].Add(1, 2, 3, 1);
+                }
                 ///ここで左右のブロックの状態を見てやる
                 ///ただ上下は送った先で処理できる
                 ///処理の候補
                 ///+-して同じようにダブル型にして小数点をけして検索かけて
                 ///そこの数字を貰って来て
                 ///比較してやるほうほう
-                ///
-                ///+-して他のチャンクなのかを確認
-                ///して他のチャンクだったら16+するだけ
-                ///
-                if (pmx == chank_x) {
-                    pmx--;//時の処理を書く
-                }
-                else if( pmx == chank_x + 15)
-                {
-                    pmx++;//時の処理を書く
-                }
-
-
-                ChankList[new IVector2(chank_x, chank_y)].Add(1, 2, 3, 1);
+                //////////////////////////////////////////////////////////////////////
+                //1番目のやつ
+                //いいところ(俺が見ると)分かり易い
+                //悪いところ　合計で計算が８+8+8回　　　　　　　24回
+                //double abx = pmx + 1;
+                //double abz = pmz + 1;
+                //ChankList[new IVector2((int)Math.Truncate(abx) * 16, (int)Math.Truncate(abz) * 16)].Add(1, 2, 3, 1);
+                //abx = pmx - 1;
+                //abz = pmz + 1;
+                //ChankList[new IVector2((int)Math.Truncate(abx) * 16, (int)Math.Truncate(abz) * 16)].Add(1, 2, 3, 1);
+                //abx = pmx + 1;
+                //abz = pmz - 1;
+                //ChankList[new IVector2((int)Math.Truncate(abx) * 16, (int)Math.Truncate(abz) * 16)].Add(1, 2, 3, 1);
+                //abx = pmx - 1;
+                //abz = pmz - 1;
+                //ChankList[new IVector2((int)Math.Truncate(abx) * 16, (int)Math.Truncate(abz) * 16)].Add(1, 2, 3, 1);
             }
 
 
