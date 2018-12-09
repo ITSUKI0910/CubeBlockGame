@@ -86,6 +86,7 @@ namespace Game3
                 }
                 ChankList[chank].Initialize(Initialize_blockList);
             }
+            ChankList.Remove(chanklist[0]);
         }
         public void LoadContent(GraphicsDevice graphicsDevice)
         {
@@ -166,167 +167,60 @@ namespace Game3
                 double c_z = pmz / 16;
                 int chank_x = (int)Math.Truncate(c_x) * 16;
                 int chank_z = (int)Math.Truncate(c_z) * 16;
+                ///これを動作させられるようにする
+                ChankList[new IVector2(chank_x, chank_z)].Add(pmx++, pmy, pmz, 1);
+                ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmy, pmz++, 4);
+                ChankList[new IVector2(chank_x, chank_z)].Add(pmx--, pmy, pmz, 2);
+                ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmy, pmz--, 3);
                 if (ChankList.ContainsKey(new IVector2(chank_x, chank_z)))
                 {
-
+                    ChankList[new IVector2(chank_x, chank_z)].Add(pmx++, pmz, 0, 0);
                     //////////////////////////////////////////////////////////////////////
                     //2番目のやつ
                     //最終的に消す処理だから
                     //となりに描画させるプログラム
                     //pmxの入ってるチャンクの原点を見てるから　小数点以下を消した時同じになるから
                     //上　右　下　左　の順番でやる
-                    if (pmx == chank_x && pmz == chank_z)//左下
-                    {
-                        ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmz++, 0, 0);
-                        ChankList[new IVector2(chank_x, chank_z)].Add(pmx++, pmz, 0, 0);
-                        if (ChankList.ContainsKey(new IVector2(chank_x - 16, chank_z))) ChankList[new IVector2(chank_x - 16, chank_z)].Add(pmx--, pmz, 0, 0);
-                        if (ChankList.ContainsKey(new IVector2(chank_x, chank_z - 16))) ChankList[new IVector2(chank_x, chank_z - 16)].Add(pmx, pmz--, 0, 0);
-                    }
-                    else
-                    if (pmx == chank_x + 15 && pmz == chank_z)//左上
-                    {
-                        if (ChankList.ContainsKey(new IVector2(chank_x + 16, chank_z))) ChankList[new IVector2(chank_x + 16, chank_z)].Add(pmx++, pmz, 0, 0);
-                        ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmz++, 0, 0);
-                        ChankList[new IVector2(chank_x, chank_z)].Add(pmx--, pmz, 0, 0);
-                        if (ChankList.ContainsKey(new IVector2(chank_x, chank_z - 16))) ChankList[new IVector2(chank_x, chank_z - 16)].Add(pmx, pmz--, 0, 0);
-                    }
-                    else
-                    if (pmx == chank_x && pmz == chank_z + 15)//右下
-                    {
-                        ChankList[new IVector2(chank_x, chank_z)].Add(pmx++, pmz, 0, 0);
-                        if (ChankList.ContainsKey(new IVector2(chank_x, chank_z + 16))) ChankList[new IVector2(chank_x, chank_z + 16)].Add(pmx, pmz++, 0, 0);
-                        if (ChankList.ContainsKey(new IVector2(chank_x - 16, chank_z))) ChankList[new IVector2(chank_x - 16, chank_z)].Add(pmx--, pmz, 0, 0);
-                        ChankList[new IVector2(chank_x, chank_z - 16)].Add(pmx, pmz--, 0, 0);
-                    }
-                    else
-                    if (pmx == chank_x + 15&& pmz == chank_z + 15)//右上
-                    {
-                        if (ChankList.ContainsKey(new IVector2(chank_x + 16, chank_z))) ChankList[new IVector2(chank_x + 16, chank_z)].Add(pmx++, pmz, 0, 0);
-                        if (ChankList.ContainsKey(new IVector2(chank_x, chank_z + 16))) ChankList[new IVector2(chank_x, chank_z + 16)].Add(pmx, pmz++, 0, 0);
-                        ChankList[new IVector2(chank_x, chank_z)].Add(pmx--, pmz, 0, 0);
-                        ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmz++, 0, 0);
-                    }
-                    else
-                    {
-                        ChankList[new IVector2(chank_x, chank_z)].Add(pmx++, pmz, 0, 0);
-                        ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmz++, 0, 0);
-                        ChankList[new IVector2(chank_x, chank_z)].Add(pmx--, pmz, 0, 0);
-                        ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmz--, 0, 0);
-                    }
-                        ChankList[new IVector2(chank_x, chank_z)].Add(1, 2, 3, 1);
+                    //if (pmx == chank_x + 15 && pmz == chank_z)//左上
+                    //{
+                    //    if (ChankList.ContainsKey(new IVector2(chank_x + 16, chank_z))) ChankList[new IVector2(chank_x + 16, chank_z)].Add(pmx++, pmz, 0, 0);
+                    //    ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmz++, 0, 0);
+                    //    ChankList[new IVector2(chank_x, chank_z)].Add(pmx--, pmz, 0, 0);
+                    //    if (ChankList.ContainsKey(new IVector2(chank_x, chank_z - 16))) ChankList[new IVector2(chank_x, chank_z - 16)].Add(pmx, pmz--, 0, 0);
+                    //}
+                    //else
+                    //if (pmx == chank_x + 15 && pmz == chank_z + 15)//右上
+                    //{
+                    //    if (ChankList.ContainsKey(new IVector2(chank_x + 16, chank_z))) ChankList[new IVector2(chank_x + 16, chank_z)].Add(pmx++, pmz, 0, 0);
+                    //    if (ChankList.ContainsKey(new IVector2(chank_x, chank_z + 16))) ChankList[new IVector2(chank_x, chank_z + 16)].Add(pmx, pmz++, 0, 0);
+                    //    ChankList[new IVector2(chank_x, chank_z)].Add(pmx--, pmz, 0, 0);
+                    //    ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmz--, 0, 0);
+                    //}
+                    //else
+                    //if (pmx == chank_x && pmz == chank_z)//左下
+                    //{
+                    //    ChankList[new IVector2(chank_x, chank_z)].Add(pmx++, pmz, 0, 0);
+                    //    ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmz++, 0, 0);
+                    //    if (ChankList.ContainsKey(new IVector2(chank_x - 16, chank_z))) ChankList[new IVector2(chank_x - 16, chank_z)].Add(pmx--, pmz, 0, 0);
+                    //    if (ChankList.ContainsKey(new IVector2(chank_x, chank_z - 16))) ChankList[new IVector2(chank_x, chank_z - 16)].Add(pmx, pmz--, 0, 0);
+                    //}
+                    //else
+                    //if (pmx == chank_x && pmz == chank_z + 15)//右下
+                    //{
+                    //    ChankList[new IVector2(chank_x, chank_z)].Add(pmx++, pmz, 0, 0);
+                    //    if (ChankList.ContainsKey(new IVector2(chank_x, chank_z + 16))) ChankList[new IVector2(chank_x, chank_z + 16)].Add(pmx, pmz++, 0, 0);
+                    //    if (ChankList.ContainsKey(new IVector2(chank_x - 16, chank_z))) ChankList[new IVector2(chank_x - 16, chank_z)].Add(pmx--, pmz, 0, 0);
+                    //    ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmz--, 0, 0);
+                    //}
+                    //else
+                    //{
+                    //    ChankList[new IVector2(chank_x, chank_z)].Add(pmx++, pmy, pmz, 1);
+                    //    ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmy, pmz++, 4);
+                    //    ChankList[new IVector2(chank_x, chank_z)].Add(pmx--, pmy, pmz, 2);
+                    //    ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmy, pmz--, 3);
+                    //}
                 }
-                ///ここで左右のブロックの状態を見てやる
-                ///ただ上下は送った先で処理できる
-                ///処理の候補
-                ///+-して同じようにダブル型にして小数点をけして検索かけて
-                ///そこの数字を貰って来て
-                ///比較してやるほうほう
-                //////////////////////////////////////////////////////////////////////
-                //1番目のやつ
-                //いいところ(俺が見ると)分かり易い
-                //悪いところ　合計で計算が８+8+8回　　　　　　　24回
-                //double abx = pmx + 1;
-                //double abz = pmz + 1;
-                //ChankList[new IVector2((int)Math.Truncate(abx) * 16, (int)Math.Truncate(abz) * 16)].Add(1, 2, 3, 1);
-                //abx = pmx - 1;
-                //abz = pmz + 1;
-                //ChankList[new IVector2((int)Math.Truncate(abx) * 16, (int)Math.Truncate(abz) * 16)].Add(1, 2, 3, 1);
-                //abx = pmx + 1;
-                //abz = pmz - 1;
-                //ChankList[new IVector2((int)Math.Truncate(abx) * 16, (int)Math.Truncate(abz) * 16)].Add(1, 2, 3, 1);
-                //abx = pmx - 1;
-                //abz = pmz - 1;
-                //ChankList[new IVector2((int)Math.Truncate(abx) * 16, (int)Math.Truncate(abz) * 16)].Add(1, 2, 3, 1);
             }
-
-
-
-
-
-            //    if (WorldBlockDate.ContainsKey(new IVector3(player_mouse_x, player_mouse_y, player_mouse_z)) && WorldBlockDate[new IVector3(player_mouse_x, player_mouse_y, player_mouse_z)] != 0)
-            //    {
-            //        WorldBlockDate[new IVector3(player_mouse_x, player_mouse_y, player_mouse_z)] = 0;
-            //        if (DrawBlocks.ContainsKey(new IVector3(player_mouse_x, player_mouse_y, player_mouse_z))) DrawBlocks.Remove(new IVector3(player_mouse_x, player_mouse_y, player_mouse_z));
-            //        IVector3 vec3 = new IVector3(player_mouse_x + 1, player_mouse_y, player_mouse_z);
-            //        if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
-            //        {
-            //            if (DrawBlocks.ContainsKey(vec3))
-            //            {
-            //                DrawBlocks[vec3].Front();
-            //            }
-            //            else
-            //            {
-            //                DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { true, false, false, false, false, false }, Content));
-            //                DrawBlocks[vec3].LoadContent(GraphicsDevice);
-            //            }
-            //        }
-            //        vec3 = new IVector3(player_mouse_x, player_mouse_y, player_mouse_z - 1);
-            //        if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
-            //        {
-            //            if (DrawBlocks.ContainsKey(vec3))
-            //            {
-            //                DrawBlocks[vec3].Right();
-            //            }
-            //            else
-            //            {
-            //                DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { false, true, false, false, false, false }, Content));
-            //                DrawBlocks[vec3].LoadContent(GraphicsDevice);
-            //            }
-            //        }
-            //        vec3 = new IVector3(player_mouse_x - 1, player_mouse_y, player_mouse_z);
-            //        if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
-            //        {
-            //            if (DrawBlocks.ContainsKey(vec3))
-            //            {
-            //                DrawBlocks[vec3].Back();
-            //            }
-            //            else
-            //            {
-            //                DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { false, false, true, false, false, false }, Content));
-            //                DrawBlocks[vec3].LoadContent(GraphicsDevice);
-            //            }
-            //        }
-            //        vec3 = new IVector3(player_mouse_x, player_mouse_y, player_mouse_z + 1);
-            //        if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
-            //        {
-            //            if (DrawBlocks.ContainsKey(vec3))
-            //            {
-            //                DrawBlocks[vec3].Left();
-            //            }
-            //            else
-            //            {
-            //                DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { false, false, false, true, false, false }, Content));
-            //                DrawBlocks[vec3].LoadContent(GraphicsDevice);
-            //            }
-            //        }
-            //        vec3 = new IVector3(player_mouse_x, player_mouse_y - 1, player_mouse_z);
-            //        if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
-            //        {
-            //            if (DrawBlocks.ContainsKey(vec3))
-            //            {
-            //                DrawBlocks[vec3].Up();
-            //            }
-            //            else
-            //            {
-            //                DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { false, false, false, false, true, false }, Content));
-            //                DrawBlocks[vec3].LoadContent(GraphicsDevice);
-            //            }
-            //        }
-            //        vec3 = new IVector3(player_mouse_x, player_mouse_y + 1, player_mouse_z);
-            //        if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
-            //        {
-            //            if (DrawBlocks.ContainsKey(vec3))
-            //            {
-            //                DrawBlocks[vec3].Down();
-            //            }
-            //            else
-            //            {
-            //                DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { false, false, false, false, false, true }, Content));
-            //                DrawBlocks[vec3].LoadContent(GraphicsDevice);
-            //            }
-            //        }
-            //    }
-            //}
             ///ブロックを置く
             //if (Mouse.GetState().RightButton == ButtonState.Pressed)
             //{
