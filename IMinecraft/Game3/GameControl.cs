@@ -37,7 +37,6 @@ namespace Game3
         ContentManager Content;
         GraphicsDevice GraphicsDevice;
         BasicEffect effect;
-        private Dictionary<BlockID, BlockMaterialawd> material = new Dictionary<BlockID, BlockMaterialawd>();
         Vector3 _position = new Vector3(0, 68, 0);
 
         /// <summary>
@@ -168,13 +167,9 @@ namespace Game3
                 int chank_x = (int)Math.Truncate(c_x) * 16;
                 int chank_z = (int)Math.Truncate(c_z) * 16;
                 ///これを動作させられるようにする
-                ChankList[new IVector2(chank_x, chank_z)].Add(pmx++, pmy, pmz, 1);
-                ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmy, pmz++, 4);
-                ChankList[new IVector2(chank_x, chank_z)].Add(pmx--, pmy, pmz, 2);
-                ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmy, pmz--, 3);
                 if (ChankList.ContainsKey(new IVector2(chank_x, chank_z)))
                 {
-                    ChankList[new IVector2(chank_x, chank_z)].Add(pmx++, pmz, 0, 0);
+                    ChankList[new IVector2(chank_x, chank_z)].BreakBlock(pmx, pmy, pmz);
                     //////////////////////////////////////////////////////////////////////
                     //2番目のやつ
                     //最終的に消す処理だから
@@ -214,10 +209,14 @@ namespace Game3
                     //}
                     //else
                     //{
-                    //    ChankList[new IVector2(chank_x, chank_z)].Add(pmx++, pmy, pmz, 1);
-                    //    ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmy, pmz++, 4);
-                    //    ChankList[new IVector2(chank_x, chank_z)].Add(pmx--, pmy, pmz, 2);
-                    //    ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmy, pmz--, 3);
+                        //ChankList[new IVector2(chank_x, chank_z)].Add(pmx+2, pmy, pmz, 1);
+                        //ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmy, pmz, 1);
+                    //ChankList[new IVector2(chank_x, chank_z)].Add(pmx-2, pmy, pmz, 1);
+                    //ChankList[new IVector2(chank_x, chank_z)].Add(pmx+1, pmy, pmz, 1);
+                    //ChankList[new IVector2(chank_x, chank_z)].Add(pmx+1, pmy, pmz, 3);
+
+                    //ChankList[new IVector2(chank_x, chank_z)].Add(pmx--, pmy, pmz, 2);
+                    //ChankList[new IVector2(chank_x, chank_z)].Add(pmx, pmy, pmz--, 3);
                     //}
                 }
             }

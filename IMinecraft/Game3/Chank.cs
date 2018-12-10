@@ -137,10 +137,34 @@ namespace Game3
     }
     class Chank
     {
+        /// <summary>
+        /// ブロックリスト
+        /// 点データ
+        /// 面データ
+        /// 
+        /// 理想
+        /// ブロックを消せと言われたら
+        /// その座標で登録したやつを消す
+        /// 消すと面データがずれる
+        /// 
+        /// 配列だったら
+        /// 点配列[]
+        /// 面配列[]を用意
+        /// 
+        /// ただ配列だとうまくいかないのでリスト使おうかな
+        /// 
+        /// XYZで何番目のやつなのかを登録して
+        /// その部分を消した後
+        /// 後ろのやつを消す
+        /// </summary>
         private Dictionary<IVector3, int> blockList;
         private SortedDictionary<IVector4, Plate> drawplate = new SortedDictionary<IVector4, Plate>();
+
         private List<VertexPositionTexture> vertices_list = new List<VertexPositionTexture>();
         private List<int> indices_list = new List<int>();
+
+        private VertexPositionTexture[] vertices_Arry;
+        private int[] indices_Arry;
         public void Initialize(Dictionary<IVector3, int> _blocklist)
         {
             blockList = _blocklist;
@@ -148,48 +172,79 @@ namespace Game3
         ///座標とどの面なのかがわかる
         public void Add(int X, int Y, int Z, int number)
         {
+            ///1前
+            bool drawflag = false;
             switch (number)
             {
                 case 1://正面
                     drawplate.Add(new IVector4(X, Y, Z, number), new FrontPlate(X, Y, Z, vertices_list.Count));
+                    drawflag = true;
                     break;
                 case 2://右
-                    drawplate.Add(new IVector4(X, Y, Z, number), new RightPlate(X, Y, Z, vertices_list.Count));
+                    if (!drawplate.ContainsKey(new IVector4(X, Y, Z, number))) drawplate.Add(new IVector4(X, Y, Z, number), new RightPlate(X, Y, Z, vertices_list.Count));
+                    drawflag = true;
                     break;
                 case 3://後ろ
-                    drawplate.Add(new IVector4(X, Y, Z, number), new BackPlate(X, Y, Z, vertices_list.Count));
+                    if (!drawplate.ContainsKey(new IVector4(X, Y, Z, number))) drawplate.Add(new IVector4(X, Y, Z, number), new BackPlate(X, Y, Z, vertices_list.Count));
+                    drawflag = true;
                     break;
                 case 4://左
-                    drawplate.Add(new IVector4(X, Y, Z, number), new LeftPlate(X, Y, Z, vertices_list.Count));
+                    if (!drawplate.ContainsKey(new IVector4(X, Y, Z, number))) drawplate.Add(new IVector4(X, Y, Z, number), new LeftPlate(X, Y, Z, vertices_list.Count));
+                    drawflag = true;
                     break;
                 case 5://上
-                    drawplate.Add(new IVector4(X, Y, Z, number), new UpPlate(X, Y, Z, vertices_list.Count));
+                    if (!drawplate.ContainsKey(new IVector4(X, Y, Z, number))) drawplate.Add(new IVector4(X, Y, Z, number), new UpPlate(X, Y, Z, vertices_list.Count));
+                    drawflag = true;
                     break;
                 case 6://下
-                    drawplate.Add(new IVector4(X, Y, Z, number), new DownPlate(X, Y, Z, vertices_list.Count));
+                    if (!drawplate.ContainsKey(new IVector4(X, Y, Z, number))) drawplate.Add(new IVector4(X, Y, Z, number), new DownPlate(X, Y, Z, vertices_list.Count));
+                    drawflag = true;
                     break;
             }
-            VertexPositionTexture[] vItem = drawplate[new IVector4(X, Y, Z, number)].GetVertices();
-            foreach (VertexPositionTexture item in vItem)
+            if (drawflag)
             {
-                vertices_list.Add(item);
+                foreach (VertexPositionTexture item in drawplate[new IVector4(X, Y, Z, number)].GetVertices())
+                {
+                    vertices_list.Add(item);
+                }
+                foreach (int item in drawplate[new IVector4(X, Y, Z, number)].GetIndices())
+                {
+                    indices_list.Add(item);
+                }
+                vertices_Arry = vertices_list.ToArray();
+                indices_Arry = indices_list.ToArray();
             }
-            int[] iItem = drawplate[new IVector4(X, Y, Z, number)].GetIndices();
-            foreach (int item in iItem)
+        }
+        public void BreakBlock(int X, int Y, int Z)
+        {
+            //このブロックが描画されてる部分があったら消す
+
+            int a = 0;
+            for (int i = 1; i < 7; i++)
             {
-                indices_list.Add(item);
+                if (drawplate.ContainsKey(new IVector4(X, Y, Z, i))) drawplate.Remove(new IVector4(X, Y, Z, i));
+                a++;
             }
+            //ダメだった
+            //drawplate2 = drawplate;
+            //drawplate.Clear();
+            //vertices_list.Clear();
+            //indices_list.Clear();
+            //foreach (var item in drawplate2)
+            //{
+            //    Add(item.Key.X, item.Key.Y, item.Key.Z, item.Key.W);
+            //}
         }
         public void Draw(GraphicsDevice graphicsDevice)
         {
             graphicsDevice.DrawUserIndexedPrimitives(
                 PrimitiveType.TriangleList,
-                vertices_list.ToArray(),
+                vertices_Arry,
                 0,
-                vertices_list.Count,
-                indices_list.ToArray(),
+                vertices_Arry.Length,
+                indices_Arry,
                 0,
-                indices_list.Count / 3);
+                indices_Arry.Length / 3);
 
         }
     }

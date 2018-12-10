@@ -31,7 +31,7 @@ namespace Game3
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferWidth = 1850;
+            graphics.PreferredBackBufferWidth = 1650;
             graphics.PreferredBackBufferHeight = 1000;
             game = new GameControl(Content);
         }

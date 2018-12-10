@@ -41,28 +41,19 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BlockMaterial\BackMaterial.cs" />
     <Compile Include="Block.cs" />
     <Compile Include="BlocklID.cs" />
-    <Compile Include="BlockMaterial\BlockMaterial.cs" />
-    <Compile Include="BlockMaterialawd.cs" />
-    <Compile Include="BlockMaterial\BlockMaterialID.cs" />
     <Compile Include="Chank.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="CreateBlockDate.cs" />
-    <Compile Include="BlockMaterial\DownMaterial.cs" />
-    <Compile Include="BlockMaterial\FrontMaterial.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameControl.cs" />
     <Compile Include="Utility\IVector2.cs" />
     <Compile Include="Utility\IVector3.cs" />
     <Compile Include="Utility\IVector4.cs" />
-    <Compile Include="BlockMaterial\LeftMaterial.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="BlockMaterial\RightMaterial.cs" />
     <Compile Include="Stone.cs" />
-    <Compile Include="BlockMaterial\UpMaterial.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

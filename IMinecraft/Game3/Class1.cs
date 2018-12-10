@@ -1,371 +1,251 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//using Microsoft.Xna.Framework;
+//using Microsoft.Xna.Framework.Graphics;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
 
-namespace Game3
-{
-}
-//    class Class1
+//namespace Game3
+//{
+//    /// ブロックデータ
+//    /// 点データ
+//    /// 面データ
+//    /// 
+//    ///面クラスをnewして配列で管理して
+//    ///配列の一部を消して後ろからそこに持ってきて
+//    ///もってきた数字に対して配列番号から割り出す
+//    ///
+//    ///面クラスを座標で管理
+//    ///面クラスは点データと面データを持ち
+//    ///面データに関しては生成と同時に配列番号を割り当てて
+//    ///全て足しても壊れないようにする
+//    ///
+//    ///プレートで行こうかな
+//    class FrontPlate : Plate
 //    {
-//        public GameControl(ContentManager Content)
+//        public FrontPlate(int X, int Y, int Z, int W)
 //        {
-//            this.Content = Content;
-//            material.Add(BlockID.stone, new Stone());
+//            vertices[0] = new VertexPositionTexture(new Vector3(X, Y + 1, Z), Vector2.Zero);
+//            vertices[1] = new VertexPositionTexture(new Vector3(X, Y + 1, Z + 1), new Vector2(0.16f, 0));
+//            vertices[2] = new VertexPositionTexture(new Vector3(X, Y, Z), Vector2.UnitY);
+//            vertices[3] = new VertexPositionTexture(new Vector3(X, Y, Z + 1), new Vector2(0.16f, 1));
+//            indices[0] = W + 2;
+//            indices[1] = W + 1;
+//            indices[2] = W + 3;
+//            indices[3] = W + 2;
+//            indices[4] = W + 0;
+//            indices[5] = W + 1;
 //        }
-//        public void Initialize(Dictionary<IVector3, int> wbd, List<IVector2> ChankList)
+//    }
+//    class RightPlate : Plate
+//    {
+//        public RightPlate(int X, int Y, int Z, int W)
 //        {
-//            WorldBlockDate = wbd;
-//            int x, y, z;
-//            bool[] FRBLUD = new bool[6] { false, false, false, false, false, false };
-//            foreach (var Chank in ChankList)
-//            {
-//                int X = Chank.Y, Z = Chank.Y;
-//                for (y = 0; y < 64; y++)
-//                {
-//                    for (x = 0; x < 16; x++)
-//                    {
-//                        for (z = 0; z < 16; z++)
-//                        {
-//                            if (wbd[new IVector3(x, y, z)] == 1)
-//                            {
-//                                //この書き方するとなぜかバグる
-//                                //FRBLUD[0] = false;
-//                                //FRBLUD[1] = false;
-//                                //FRBLUD[2] = false;
-//                                //FRBLUD[3] = false;
-//                                //FRBLUD[4] = false;
-//                                //FRBLUD[5] = false;
-//                                FRBLUD = new bool[6] { false, false, false, false, false, false };
-//                                bool a = false;
-//                                if (wbd.ContainsKey(new IVector3(X + x - 1, y, z + Z)) && wbd[new IVector3(X + x - 1, y, z + Z)] != 0) { } else { FRBLUD[0] = true; a = true; }
-//                                if (wbd.ContainsKey(new IVector3(X + x, y, z + 1 + Z)) && wbd[new IVector3(X + x, y, z + 1 + Z)] != 0) { } else { FRBLUD[1] = true; a = true; }
-//                                if (wbd.ContainsKey(new IVector3(X + x + 1, y, z + Z)) && wbd[new IVector3(X + x + 1, y, z + Z)] != 0) { } else { FRBLUD[2] = true; a = true; }
-//                                if (wbd.ContainsKey(new IVector3(X + x, y, z - 1 + Z)) && wbd[new IVector3(X + x, y, z - 1 + Z)] != 0) { } else { FRBLUD[3] = true; a = true; }
-//                                if (wbd.ContainsKey(new IVector3(X + x, y + 1, z + Z)) && wbd[new IVector3(X + x, y + 1, z + Z)] != 0) { } else { FRBLUD[4] = true; a = true; }
-//                                if (wbd.ContainsKey(new IVector3(X + x, y - 1, z + Z)) && wbd[new IVector3(X + x, y - 1, z + Z)] != 0) { } else { FRBLUD[5] = true; a = true; }
-//                                if (a) DrawBlocks.Add(new IVector3(X + x, y, z + Z), new Block(new IVector3(X + x, y, z + Z), BlockID.stone, FRBLUD, Content));
-//                            }
-//                        }
-//                    }
-
-//                }
-//            }
+//            vertices[0] = new VertexPositionTexture(new Vector3(X, Y + 1, Z + 1), new Vector2(0.17f, 0));//6
+//            vertices[1] = new VertexPositionTexture(new Vector3(X + 1, Y + 1, Z + 1), new Vector2(0.33f, 0));//8
+//            vertices[2] = new VertexPositionTexture(new Vector3(X, Y, Z + 1), new Vector2(0.17f, 1));//2
+//            vertices[3] = new VertexPositionTexture(new Vector3(X + 1, Y, Z + 1), new Vector2(0.33f, 1));//4
+//            indices[0] = W + 2;
+//            indices[1] = W + 1;
+//            indices[2] = W + 3;
+//            indices[3] = W + 2;
+//            indices[4] = W + 0;
+//            indices[5] = W + 1;
 //        }
-//        public void LoadContent(GraphicsDevice graphicsDevice)
+//    }
+//    class BackPlate : Plate
+//    {
+//        public BackPlate(int X, int Y, int Z, int W)
 //        {
-//            this.GraphicsDevice = graphicsDevice;
-//            effect = new BasicEffect(GraphicsDevice)
-//            {
-//                TextureEnabled = true,
-//                View = Matrix.CreateLookAt(
-//                _position,   //カメラの位置
-//                new Vector3(0, 0, 0),  //カメラの見る点
-//                new Vector3(0, 1, 0)    //カメラの上向きベクトル。(0, -1, 0)にすると画面が上下逆になる
-//                ),
-//                Projection = Matrix.CreatePerspectiveFieldOfView
-//                (
-//                MathHelper.ToRadians(45),   //視野の角度。
-//                GraphicsDevice.Viewport.AspectRatio,//画面のアスペクト比(=横/縦)
-//                1,      //カメラからこれより近い物体は画面に映らない
-//                1000     //カメラからこれより遠い物体は画面に映らない
-//                )
-//            };
-//            foreach (Block block in DrawBlocks.Values)
-//            {
-//                block.LoadContent(graphicsDevice);
-//            }
-//            effect.Texture = Content.Load<Texture2D>("grass");
+//            vertices[0] = new VertexPositionTexture(new Vector3(X + 1, Y + 1, Z + 1), new Vector2(0.3333f, 0));//8
+//            vertices[1] = new VertexPositionTexture(new Vector3(X + 1, Y + 1, Z), new Vector2(0.50f, 0));//7
+//            vertices[2] = new VertexPositionTexture(new Vector3(X + 1, Y, Z + 1), new Vector2(0.3333f, 1));//4
+//            vertices[3] = new VertexPositionTexture(new Vector3(X + 1, Y, Z), new Vector2(0.50f, 1));//3
+//            indices[0] = W + 2;
+//            indices[1] = W + 1;
+//            indices[2] = W + 3;
+//            indices[3] = W + 2;
+//            indices[4] = W + 0;
+//            indices[5] = W + 1;
 //        }
-//        public void UnloadContent()
+//    }
+//    class LeftPlate : Plate
+//    {
+//        public LeftPlate(int X, int Y, int Z, int W)
 //        {
-//            effect.Dispose();
+//            vertices[0] = new VertexPositionTexture(new Vector3(X + 1, Y + 1, Z), new Vector2(0.50f, 0));//7
+//            vertices[1] = new VertexPositionTexture(new Vector3(X, Y + 1, Z), new Vector2(0.66f, 0));//5
+//            vertices[2] = new VertexPositionTexture(new Vector3(X + 1, Y, Z), new Vector2(0.50f, 1));//3
+//            vertices[3] = new VertexPositionTexture(new Vector3(X, Y, Z), new Vector2(0.66f, 1));//1
+//            indices[0] = W + 2;
+//            indices[1] = W + 1;
+//            indices[2] = W + 3;
+//            indices[3] = W + 2;
+//            indices[4] = W + 0;
+//            indices[5] = W + 1;
 //        }
-//        float _yaw =179;
-//        float _pitch = 3.5f;
-//        Vector3 CameraPosition;
-//        public void Update()
+//    }
+//    class UpPlate : Plate
+//    {
+//        public UpPlate(int X, int Y, int Z, int W)
 //        {
-//            KeyboardState keyboardState = Keyboard.GetState();
-//            // マウスが画面中央からどれだけ移動したかを取得し、値を変化させる
-//            // YawはY軸を中心とした横回転
-//            _yaw += ((Mouse.GetState().X - GraphicsDevice.Viewport.Width / 2) / 1000f) * 2;
-//            // PitchはX軸を中心とした縦回転
-//            _pitch += ((Mouse.GetState().Y - GraphicsDevice.Viewport.Height / 2) / 1000f) * 2;
-
-//            CameraPosition = new Vector3((float)(Math.Cos(_yaw) * Math.Cos(_pitch)), (float)Math.Sin(_pitch), (float)(Math.Sin(_yaw) * Math.Cos(_pitch)));
-
-//            // マウスを画面の中心に置く
-//            Mouse.SetPosition(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
-//            float amerika = 14.155554f;
-//            // キー入力情報を取得
-//            if (keyboardState.IsKeyDown(Keys.W)) _position += new Vector3((float)(Math.Cos(_yaw) * Math.Cos(_pitch)), 0, (float)(Math.Sin(_yaw) * Math.Cos(_pitch))) * 0.15f;
-//            if (keyboardState.IsKeyDown(Keys.S)) _position -= new Vector3((float)(Math.Cos(_yaw) * Math.Cos(_pitch)), 0, (float)(Math.Sin(_yaw) * Math.Cos(_pitch))) * 0.15f;
-//            if (keyboardState.IsKeyDown(Keys.A)) _position -= new Vector3((float)(Math.Cos(_yaw + amerika) * Math.Cos(_pitch)), 0, (float)(Math.Sin(_yaw + amerika) * Math.Cos(_pitch))) * 0.15f;
-//            if (keyboardState.IsKeyDown(Keys.D)) _position += new Vector3((float)(Math.Cos(_yaw + amerika) * Math.Cos(_pitch)), 0, (float)(Math.Sin(_yaw + amerika) * Math.Cos(_pitch))) * 0.15f;
-//            if (keyboardState.IsKeyUp(Keys.LeftShift))
-//            {
-//                //下に下りたときの処理
-//                _position -= new Vector3(0, 0.5f, 0);
-//                //int Y = (int)Math.Truncate(_position.Y - CollisionDown);
-//                //int X0 = (int)Math.Truncate(_position.X - CollisionSide);
-//                //int X1 = (int)Math.Truncate(_position.X + CollisionSide);
-//                //int Z0 = (int)Math.Truncate(_position.Z - CollisionSide);
-//                //int Z1 = (int)Math.Truncate(_position.Z + CollisionSide);
-//                //bool ITSUKI = false;
-//                //if (X0 == X1)
-//                //{
-//                //    if (Z0 == Z1)
-//                //    {
-//                //        if (blockList.ContainsKey(new IVector3(X0, Y, Z0)) && blockList[new IVector3(X0, Y, Z0)] != 0) ITSUKI = true;
-//                //    }
-//                //    else
-//                //    {
-//                //        if (blockList.ContainsKey(new IVector3(X0, Y, Z0)) && blockList[new IVector3(X0, Y, Z0)] != 0) { ITSUKI = true; }
-//                //        else if (blockList.ContainsKey(new IVector3(X0, Y, Z1)) && blockList[new IVector3(X0, Y, Z1)] != 0) ITSUKI = true;
-//                //    }
-//                //}
-//                //else
-//                //{
-//                //    if (Z0 == Z1)
-//                //    {
-//                //        if (blockList.ContainsKey(new IVector3(X0, Y, Z0)) && blockList[new IVector3(X0, Y, Z0)] != 0) { ITSUKI = true; }
-//                //        else if (blockList.ContainsKey(new IVector3(X1, Y, Z0)) && blockList[new IVector3(X1, Y, Z0)] != 0) ITSUKI = true;
-//                //    }
-//                //    else
-//                //    {
-//                //        if (blockList.ContainsKey(new IVector3(X0, Y, Z0)) && blockList[new IVector3(X0, Y, Z0)] != 0) { ITSUKI = true; }
-//                //        else if (blockList.ContainsKey(new IVector3(X1, Y, Z0)) && blockList[new IVector3(X1, Y, Z0)] != 0) { ITSUKI = true; }
-//                //        else if (blockList.ContainsKey(new IVector3(X0, Y, Z1)) && blockList[new IVector3(X0, Y, Z1)] != 0) { ITSUKI = true; }
-//                //        else if (blockList.ContainsKey(new IVector3(X1, Y, Z1)) && blockList[new IVector3(X1, Y, Z1)] != 0) { ITSUKI = true; }
-//                //    }
-//                //}
-//                //if (ITSUKI) _position = new Vector3(_position.X, Y + 1 + CollisionDown, _position.Z);
-//            }
-//            if (keyboardState.IsKeyDown(Keys.Space))
-//            {
-//                //上に上がったときの処理
-//                _position += new Vector3(0, 0.5f, 0);
-//                //int Y = (int)Math.Truncate(_position.Y + CollisionUp);
-//                //int X0 = (int)Math.Truncate(_position.X - CollisionSide);
-//                //int X1 = (int)Math.Truncate(_position.X + CollisionSide);
-//                //int Z0 = (int)Math.Truncate(_position.Z - CollisionSide);
-//                //int Z1 = (int)Math.Truncate(_position.Z + CollisionSide);
-//                //bool ITSUKI = false;
-//                //if (X0 == X1)
-//                //{
-//                //    if (Z0 == Z1)
-//                //    {
-//                //        if (blockList.ContainsKey(new IVector3(X0, Y, Z0)) && blockList[new IVector3(X0, Y, Z0)] != 0) ITSUKI = true;
-//                //    }
-//                //    else
-//                //    {
-//                //        if (blockList.ContainsKey(new IVector3(X0, Y, Z0)) && blockList[new IVector3(X0, Y, Z0)] != 0)
-//                //        {
-//                //            ITSUKI = true;
-//                //        }
-//                //        else if (blockList.ContainsKey(new IVector3(X0, Y, Z1)) && blockList[new IVector3(X0, Y, Z1)] != 0)
-//                //        {
-//                //            ITSUKI = true;
-//                //        }
-//                //    }
-//                //}
-//                //else
-//                //{
-//                //    if (Z0 == Z1)
-//                //    {
-//                //        if (blockList.ContainsKey(new IVector3(X0, Y, Z0)) && blockList[new IVector3(X0, Y, Z0)] != 0)
-//                //        {
-//                //            ITSUKI = true;
-//                //        }
-//                //        else if (blockList.ContainsKey(new IVector3(X1, Y, Z0)) && blockList[new IVector3(X1, Y, Z0)] != 0)
-//                //        {
-//                //            ITSUKI = true;
-//                //        }
-//                //    }
-//                //    else
-//                //    {
-//                //        if (blockList.ContainsKey(new IVector3(X0, Y, Z0)) && blockList[new IVector3(X0, Y, Z0)] != 0) { ITSUKI = true; }
-//                //        else if (blockList.ContainsKey(new IVector3(X1, Y, Z0)) && blockList[new IVector3(X1, Y, Z0)] != 0) { ITSUKI = true; }
-//                //        else if (blockList.ContainsKey(new IVector3(X0, Y, Z1)) && blockList[new IVector3(X0, Y, Z1)] != 0) { ITSUKI = true; }
-//                //        else if (blockList.ContainsKey(new IVector3(X1, Y, Z1)) && blockList[new IVector3(X1, Y, Z1)] != 0) { ITSUKI = true; }
-//                //    }
-//                //}
-//                //if (ITSUKI) _position = new Vector3(_position.X, Y - CollisionUp, _position.Z);
-//            }
-//            // ビュー行列を作成
-//            Vector3 b = _position + CameraPosition * 2.5f;// 0.3f;
-//            effect.View = Matrix.CreateLookAt(_position, b, new Vector3(0, 1, 0));
-
-//            //ブロックを消す
-//            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-//            {
-//                int kx = (int)Math.Truncate(b.X);
-//                int ky = (int)Math.Truncate(b.Y);
-//                int kz = (int)Math.Truncate(b.Z);
-//                if (WorldBlockDate.ContainsKey(new IVector3(kx, ky, kz)) && WorldBlockDate[new IVector3(kx, ky, kz)] != 0)
-//                {
-//                    WorldBlockDate[new IVector3(kx, ky, kz)] = 0;
-//                    if (DrawBlocks.ContainsKey(new IVector3(kx, ky, kz))) DrawBlocks.Remove(new IVector3(kx, ky, kz));
-//                    IVector3 vec3 = new IVector3(kx + 1, ky, kz);
-//                    if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
-//                    {
-//                        if (DrawBlocks.ContainsKey(vec3))
-//                        {
-//                            DrawBlocks[vec3].Front();
-//                        }
-//                        else
-//                        {
-//                            DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { true, false, false, false, false, false }, Content));
-//                            DrawBlocks[vec3].LoadContent(GraphicsDevice);
-//                        }
-//                    }
-//                    vec3 = new IVector3(kx, ky, kz - 1);
-//                    if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
-//                    {
-//                        if (DrawBlocks.ContainsKey(vec3))
-//                        {
-//                            DrawBlocks[vec3].Right();
-//                        }
-//                        else
-//                        {
-//                            DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { false, true, false, false, false, false }, Content));
-//                            DrawBlocks[vec3].LoadContent(GraphicsDevice);
-//                        }
-//                    }
-//                    vec3 = new IVector3(kx - 1, ky, kz);
-//                    if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
-//                    {
-//                        if (DrawBlocks.ContainsKey(vec3))
-//                        {
-//                            DrawBlocks[vec3].Back();
-//                        }
-//                        else
-//                        {
-//                            DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { false, false, true, false, false, false }, Content));
-//                            DrawBlocks[vec3].LoadContent(GraphicsDevice);
-//                        }
-//                    }
-//                    vec3 = new IVector3(kx, ky, kz + 1);
-//                    if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
-//                    {
-//                        if (DrawBlocks.ContainsKey(vec3))
-//                        {
-//                            DrawBlocks[vec3].Left();
-//                        }
-//                        else
-//                        {
-//                            DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { false, false, false, true, false, false }, Content));
-//                            DrawBlocks[vec3].LoadContent(GraphicsDevice);
-//                        }
-//                    }
-//                    vec3 = new IVector3(kx, ky - 1, kz);
-//                    if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
-//                    {
-//                        if (DrawBlocks.ContainsKey(vec3))
-//                        {
-//                            DrawBlocks[vec3].Up();
-//                        }
-//                        else
-//                        {
-//                            DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { false, false, false, false, true, false }, Content));
-//                            DrawBlocks[vec3].LoadContent(GraphicsDevice);
-//                        }
-//                    }
-//                    vec3 = new IVector3(kx, ky + 1, kz);
-//                    if (WorldBlockDate.ContainsKey(vec3) && WorldBlockDate[vec3] != 0)
-//                    {
-//                        if (DrawBlocks.ContainsKey(vec3))
-//                        {
-//                            DrawBlocks[vec3].Down();
-//                        }
-//                        else
-//                        {
-//                            DrawBlocks.Add(vec3, new Block(vec3, BlockID.stone, new bool[] { false, false, false, false, false, true }, Content));
-//                            DrawBlocks[vec3].LoadContent(GraphicsDevice);
-//                        }
-//                    }
-//                }
-//            }
-//            ///ブロックを置く
-//            //if (Mouse.GetState().RightButton == ButtonState.Pressed)
-//            //{
-//            //    kx = (int)Math.Truncate(b.X);
-//            //    ky = (int)Math.Truncate(b.Y);
-//            //    kz = (int)Math.Truncate(b.Z);
-//            //    if (blockList.ContainsKey(new IVector3(kx, ky, kz)))
-//            //    {
-//            //        if (blockList[new IVector3(kx, ky, kz)] == 0)
-//            //        {
-//            //            blockList[new IVector3(kx, ky, kz)] = 1;
-//            //            //まわりのブロックの描画を消す
-//            //            if (SetBlock(kx - 1, ky, kz, 13)) Front(kx, ky, kz);
-//            //            if (SetBlock(kx, ky, kz + 1, 19)) Right(kx, ky, kz);
-//            //            if (SetBlock(kx + 1, ky, kz, 1)) Back(kx, ky, kz);
-//            //            if (SetBlock(kx, ky, kz - 1, 7)) Left(kx, ky, kz);
-//            //            if (SetBlock(kx, ky + 1, kz, 31)) Up(kx, ky, kz);
-//            //            if (SetBlock(kx, ky - 1, kz, 25)) Down(kx, ky, kz);
-//            //        }
-//            //    }
-//            //    else
-//            //    {
-//            //        blockList.Add(new IVector3(kx, ky, kz), 1);
-//            //        //まわりのブロックの描画を消す
-//            //        if (SetBlock(kx - 1, ky, kz, 13)) Front(kx, ky, kz);
-//            //        if (SetBlock(kx, ky, kz + 1, 19)) Right(kx, ky, kz);
-//            //        if (SetBlock(kx + 1, ky, kz, 1)) Back(kx, ky, kz);
-//            //        if (SetBlock(kx, ky, kz - 1, 7)) Left(kx, ky, kz);
-//            //        if (SetBlock(kx, ky + 1, kz, 31)) Up(kx, ky, kz);
-//            //        if (SetBlock(kx, ky - 1, kz, 25)) Down(kx, ky, kz);
-//            //    }
-//            //}
+//            vertices[0] = new VertexPositionTexture(new Vector3(X + 1, Y + 1, Z), new Vector2(0.67f, 0));//7
+//            vertices[1] = new VertexPositionTexture(new Vector3(X + 1, Y + 1, Z + 1), new Vector2(0.83f, 0));//8
+//            vertices[2] = new VertexPositionTexture(new Vector3(X, Y + 1, Z), new Vector2(0.67f, 1));//5
+//            vertices[3] = new VertexPositionTexture(new Vector3(X, Y + 1, Z + 1), new Vector2(0.83f, 1));//6
+//            indices[0] = W + 2;
+//            indices[1] = W + 1;
+//            indices[2] = W + 3;
+//            indices[3] = W + 2;
+//            indices[4] = W + 0;
+//            indices[5] = W + 1;
 //        }
-
+//    }
+//    class DownPlate : Plate
+//    {
+//        public DownPlate(int X, int Y, int Z, int W)
+//        {
+//            vertices[0] = new VertexPositionTexture(new Vector3(X, Y, Z + 1), new Vector2(0.84f, 1));//2
+//            vertices[1] = new VertexPositionTexture(new Vector3(X + 1, Y, Z + 1), new Vector2(0.84f, 0));//4
+//            vertices[2] = new VertexPositionTexture(new Vector3(X, Y, Z), new Vector2(0.99f, 1));//1
+//            vertices[3] = new VertexPositionTexture(new Vector3(X + 1, Y, Z), new Vector2(0.99f, 0));//3
+//            indices[0] = W + 2;
+//            indices[1] = W + 1;
+//            indices[2] = W + 3;
+//            indices[3] = W + 2;
+//            indices[4] = W + 0;
+//            indices[5] = W + 1;
+//        }
+//    }
+//    /// <summary>
+//    /// やばい
+//    /// 点がだるい
+//    /// </summary>
+//    class Plate
+//    {
+//        protected VertexPositionTexture[] vertices = new VertexPositionTexture[4];
+//        protected int[] indices = new int[6];
+//        public VertexPositionTexture[] GetVertices()
+//        {
+//            return vertices;
+//        }
+//        public int[] GetIndices()
+//        {
+//            return indices;
+//        }
+//    }
+//    class Chank
+//    {
 //        /// <summary>
-//        /// カメラポジションや
-//        /// ブロックの配列を使う
-//        /// 描画部分
+//        /// ブロックリスト
+//        /// 点データ
+//        /// 面データ
 //        /// 
-//        /// 持ってくるものは
-//        /// 点データと結ぶデータとテクスチャデータ
+//        /// 理想
+//        /// ブロックを消せと言われたら
+//        /// その座標で登録したやつを消す
+//        /// 消すと面データがずれる
+//        /// 
+//        /// 配列だったら
+//        /// 点配列[]
+//        /// 面配列[]を用意
+//        /// 
+//        /// ただ配列だとうまくいかないのでリスト使おうかな
+//        /// 
+//        /// XYZで何番目のやつなのかを登録して
+//        /// その部分を消した後
+//        /// 後ろのやつを消す
 //        /// </summary>
-//        public void Draw()
+//        private Dictionary<IVector3, int> blockList;
+//        private SortedDictionary<IVector4, Plate> drawplate = new SortedDictionary<IVector4, Plate>();
+
+//        private List<VertexPositionTexture> vertices_list = new List<VertexPositionTexture>();
+//        private List<int> indices_list = new List<int>();
+
+//        private VertexPositionTexture[] vertices_Arry;
+//        private int[] indices_Arry;
+//        public void Initialize(Dictionary<IVector3, int> _blocklist)
 //        {
-//            //
-//            //大元のブロックにtextureを配列に当てはめてデータを取り出す
-//            //ブロックIDとテクスチャの配列と点データと結ぶデータ
-//            ///
-//            ///このやり方はコピーが多いいから　重すぎる
-//            ///
-//            foreach (EffectPass pass in effect.CurrentTechnique.Passes)
+//            blockList = _blocklist;
+//        }
+//        ///座標とどの面なのかがわかる
+//        public void Add(int X, int Y, int Z, int number)
+//        {
+//            ///1前
+//            bool drawflag = false;
+//            switch (number)
 //            {
-//                pass.Apply();
-//                foreach (Block block in DrawBlocks.Values)
-//                {
-//                    block.Draw(ref effect, material[block.ID]);
-//                }
+//                case 1://正面
+//                    drawplate.Add(new IVector4(X, Y, Z, number), new FrontPlate(X, Y, Z, vertices_list.Count));
+//                    drawflag = true;
+//                    break;
+//                case 2://右
+//                    if (!drawplate.ContainsKey(new IVector4(X, Y, Z, number))) drawplate.Add(new IVector4(X, Y, Z, number), new RightPlate(X, Y, Z, vertices_list.Count));
+//                    drawflag = true;
+//                    break;
+//                case 3://後ろ
+//                    if (!drawplate.ContainsKey(new IVector4(X, Y, Z, number))) drawplate.Add(new IVector4(X, Y, Z, number), new BackPlate(X, Y, Z, vertices_list.Count));
+//                    drawflag = true;
+//                    break;
+//                case 4://左
+//                    if (!drawplate.ContainsKey(new IVector4(X, Y, Z, number))) drawplate.Add(new IVector4(X, Y, Z, number), new LeftPlate(X, Y, Z, vertices_list.Count));
+//                    drawflag = true;
+//                    break;
+//                case 5://上
+//                    if (!drawplate.ContainsKey(new IVector4(X, Y, Z, number))) drawplate.Add(new IVector4(X, Y, Z, number), new UpPlate(X, Y, Z, vertices_list.Count));
+//                    drawflag = true;
+//                    break;
+//                case 6://下
+//                    if (!drawplate.ContainsKey(new IVector4(X, Y, Z, number))) drawplate.Add(new IVector4(X, Y, Z, number), new DownPlate(X, Y, Z, vertices_list.Count));
+//                    drawflag = true;
+//                    break;
 //            }
-//                //int i = 0;
-//                ////string[] texture = material[block.ID].Texture(block.DrawPossible());
-//                //VertexPositionTexture[] vertices = block.Vertex();
-//                //int[] indices = block.Indices();
-//                //foreach (EffectPass pass in effect.CurrentTechnique.Passes)
-//                //{
-//                //    effect.Texture = Content.Load<Texture2D>("grass"); ;//もってきたテクスチャの配列を入れる？ｗ
-//                //                                                        //順番は前右後ろ左上下と固定してる
-//                //    pass.Apply();
-//                //    GraphicsDevice.DrawUserIndexedPrimitives(
-//                //        PrimitiveType.TriangleList,
-//                //        vertices,
-//                //        0,
-//                //        vertices.Length,
-//                //        indices,
-//                //        0,
-//                //        indices.Length / 3);
-//                //    i++;
-//                //}
-           
+//            if (drawflag)
+//            {
+//                foreach (VertexPositionTexture item in drawplate[new IVector4(X, Y, Z, number)].GetVertices())
+//                {
+//                    vertices_list.Add(item);
+//                }
+//                foreach (int item in drawplate[new IVector4(X, Y, Z, number)].GetIndices())
+//                {
+//                    indices_list.Add(item);
+//                }
+//                vertices_Arry = vertices_list.ToArray();
+//                indices_Arry = indices_list.ToArray();
+//            }
+//        }
+//        public void BreakBlock(int X, int Y, int Z)
+//        {
+//            //このブロックが描画されてる部分があったら消す
+
+//            int a = 0;
+//            for (int i = 1; i < 7; i++)
+//            {
+//                if (drawplate.ContainsKey(new IVector4(X, Y, Z, i))) drawplate.Remove(new IVector4(X, Y, Z, i));
+//                a++;
+//            }
+//            //ダメだった
+//            drawplate2 = drawplate;
+//            drawplate.Clear();
+//            vertices_list.Clear();
+//            indices_list.Clear();
+//            foreach (var item in drawplate2)
+//            {
+//                Add(item.Key.X, item.Key.Y, item.Key.Z, item.Key.W);
+//            }
+//        }
+//        public void Draw(GraphicsDevice graphicsDevice)
+//        {
+//            graphicsDevice.DrawUserIndexedPrimitives(
+//                PrimitiveType.TriangleList,
+//                vertices_Arry,
+//                0,
+//                vertices_Arry.Length,
+//                indices_Arry,
+//                0,
+//                indices_Arry.Length / 3);
+
 //        }
 //    }
 //}
