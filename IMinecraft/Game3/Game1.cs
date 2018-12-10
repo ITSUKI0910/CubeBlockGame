@@ -12,6 +12,9 @@ using System.Linq;
 /// </summary>
 namespace Game3
 {
+    //嫌われ者は自由人
+
+
     /// <summary>
     /// クラス化（点と面を36個パターン分保存できるやつを作る
     /// それを一つにする
