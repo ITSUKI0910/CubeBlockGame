@@ -272,36 +272,57 @@ namespace Game3
                 {
                     //if (i != 3 && i != 2&& i != 1) return;
                     //何番目の点なのかを確認
-                    int number = vertices_Number[new IVector4(X, Y, Z, i)];
-                    //一番後ろから移動させてRemoveする
-                    
-                    vertices_list[number + 3] = vertices_list.Last();
-                    vertices_list.RemoveAt(vertices_list.Count()-1);
+                    if(vertices_Number.Last().Key== new IVector4(X, Y, Z, i))
+                    {
+                        int aa = vertices_list.Count();
+                        vertices_list.RemoveAt(aa - 1);
+                        vertices_list.RemoveAt(aa - 2);
+                        vertices_list.RemoveAt(aa - 3);
+                        vertices_list.RemoveAt(aa - 4);
+                        aa = indices_list.Count;
+                        indices_list.RemoveAt(aa - 1);
+                        indices_list.RemoveAt(aa - 2);
+                        indices_list.RemoveAt(aa - 3);
+                        indices_list.RemoveAt(aa - 4);
+                        indices_list.RemoveAt(aa - 5);
+                        indices_list.RemoveAt(aa - 6);
+                        vertices_Number.Remove(vertices_Number.Last().Key);
+                    }
+                    else
+                    {
 
-                    vertices_list[number + 2] = vertices_list.Last();
-                    vertices_list.RemoveAt(vertices_list.Count()-1);
+                    }
+                    //int number = vertices_Number[new IVector4(X, Y, Z, i)];
+                    ////一番後ろから移動させてRemoveする
 
-                    vertices_list[number + 1] = vertices_list.Last();
-                    vertices_list.RemoveAt(vertices_list.Count()-1);
+                    //vertices_list[number + 3] = vertices_list.Last();
+                    //vertices_list.RemoveAt(vertices_list.Count() - 1);
 
-                    vertices_list[number] = vertices_list.Last();
-                    vertices_list.RemoveAt(vertices_list.Count()-1);
+                    //vertices_list[number + 2] = vertices_list.Last();
+                    //vertices_list.RemoveAt(vertices_list.Count() - 1);
+
+                    //vertices_list[number + 1] = vertices_list.Last();
+                    //vertices_list.RemoveAt(vertices_list.Count() - 1);
+
+                    //vertices_list[number] = vertices_list.Last();
+                    //vertices_list.RemoveAt(vertices_list.Count() - 1);
+
                     //何番目の点の番号だけを一番最後のやつに移して
                     //何番目の点の配列をremoveする
-                    indices_list.RemoveAt(indices_list.Count - 1);
-                    indices_list.RemoveAt(indices_list.Count - 1);
-                    indices_list.RemoveAt(indices_list.Count - 1);
-                    indices_list.RemoveAt(indices_list.Count - 1);
-                    indices_list.RemoveAt(indices_list.Count - 1);
-                    indices_list.RemoveAt(indices_list.Count - 1);
+                    //indices_list.RemoveAt(indices_list.Count - 1);
+                    //indices_list.RemoveAt(indices_list.Count - 1);
+                    //indices_list.RemoveAt(indices_list.Count - 1);
+                    //indices_list.RemoveAt(indices_list.Count - 1);
+                    //indices_list.RemoveAt(indices_list.Count - 1);
+                    //indices_list.RemoveAt(indices_list.Count - 1);
                     //同じじゃない
                     //if (new IVector4(X, Y, Z, i) == vertices_Number.Last().Key) return;
                     //あとでここのラストキーを調べる
                     //if(vertices_Number[vertices_Number.Last().Key]> number)
                     //{
-                        vertices_Number[vertices_Number.Last().Key] = number;
-                        vertices_Number.Remove(new IVector4(X, Y, Z, i));
-                   // }
+                    //vertices_Number[vertices_Number.Last().Key] = number;
+                    //vertices_Number.Remove(new IVector4(X, Y, Z, i));
+                    // }
                     //else
                     //{
                     //    vertices_Number[new IVector4(X, Y, Z, i)] = vertices_Number.Last().Value;
