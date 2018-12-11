@@ -188,16 +188,10 @@ namespace Game3
         private List<int> indices_list = new List<int>();
         private VertexPositionTexture[] vertices_Arry;
         private int[] indices_Arry;
-        public void Initialize(Dictionary<IVector3, int> _blocklist)
-        {
-            blockList = _blocklist;
-            vertices_Arry = vertices_list.ToArray();
-            indices_Arry = indices_list.ToArray();
-        }
         ///座標とどの面なのかがわかる
         public void Add(int X, int Y, int Z, int number)
         {
-            bool drawflag = true;
+            bool drawflag = false;
             switch (number)
             {
                 case 1://正面
@@ -205,42 +199,49 @@ namespace Game3
                     vertices_list.Add(new VertexPositionTexture(new Vector3(X, Y + 1, Z + 1), new Vector2(0.16f, 0)));
                     vertices_list.Add(new VertexPositionTexture(new Vector3(X, Y, Z), Vector2.UnitY));
                     vertices_list.Add(new VertexPositionTexture(new Vector3(X, Y, Z + 1), new Vector2(0.16f, 1)));
+                    drawflag = true;
                     break;
                 case 2://右
                     vertices_list.Add(new VertexPositionTexture(new Vector3(X, Y + 1, Z + 1), new Vector2(0.17f, 0)));//6
                     vertices_list.Add(new VertexPositionTexture(new Vector3(X + 1, Y + 1, Z + 1), new Vector2(0.33f, 0)));//8
                     vertices_list.Add(new VertexPositionTexture(new Vector3(X, Y, Z + 1), new Vector2(0.17f, 1)));//2
                     vertices_list.Add(new VertexPositionTexture(new Vector3(X + 1, Y, Z + 1), new Vector2(0.33f, 1)));//4
+                    drawflag = true;
                     break;
                 case 3://後ろ
                     vertices_list.Add(new VertexPositionTexture(new Vector3(X + 1, Y + 1, Z + 1), new Vector2(0.3333f, 0)));//8
                     vertices_list.Add(new VertexPositionTexture(new Vector3(X + 1, Y + 1, Z), new Vector2(0.50f, 0)));//7
                     vertices_list.Add(new VertexPositionTexture(new Vector3(X + 1, Y, Z + 1), new Vector2(0.3333f, 1)));//4
                     vertices_list.Add(new VertexPositionTexture(new Vector3(X + 1, Y, Z), new Vector2(0.50f, 1)));//3
+                    drawflag = true;
                     break;
                 case 4://左
                     vertices_list.Add(new VertexPositionTexture(new Vector3(X + 1, Y + 1, Z), new Vector2(0.50f, 0)));//7
                     vertices_list.Add(new VertexPositionTexture(new Vector3(X, Y + 1, Z), new Vector2(0.66f, 0)));//5
                     vertices_list.Add(new VertexPositionTexture(new Vector3(X + 1, Y, Z), new Vector2(0.50f, 1)));//3
                     vertices_list.Add(new VertexPositionTexture(new Vector3(X, Y, Z), new Vector2(0.66f, 1)));//1
+                    drawflag = true;
                     break;
                 case 5://上
                     vertices_list.Add(new VertexPositionTexture(new Vector3(X + 1, Y + 1, Z), new Vector2(0.67f, 0)));//7
                     vertices_list.Add(new VertexPositionTexture(new Vector3(X + 1, Y + 1, Z + 1), new Vector2(0.83f, 0)));//8
                     vertices_list.Add(new VertexPositionTexture(new Vector3(X, Y + 1, Z), new Vector2(0.67f, 1)));//5
                     vertices_list.Add(new VertexPositionTexture(new Vector3(X, Y + 1, Z + 1), new Vector2(0.83f, 1)));//6
+                    drawflag = true;
                     break;
                 case 6://下
                     vertices_list.Add(new VertexPositionTexture(new Vector3(X, Y, Z + 1), new Vector2(0.84f, 1)));//2
                     vertices_list.Add(new VertexPositionTexture(new Vector3(X + 1, Y, Z + 1), new Vector2(0.84f, 0)));//4
                     vertices_list.Add(new VertexPositionTexture(new Vector3(X, Y, Z), new Vector2(0.99f, 1)));//1
                     vertices_list.Add(new VertexPositionTexture(new Vector3(X + 1, Y, Z), new Vector2(0.99f, 0)));//3
+                    drawflag = true;
                     break;
             }
             if (drawflag)
             {
-                vertices_Number.Add(new IVector4(X, Y, Z, number), vertices_Number.Count + 3);
-                int W = vertices_list.Count;
+                //なぜかvertices_listと同じ数字を持っている
+                int W = 4 * vertices_Number.Count;
+                vertices_Number.Add(new IVector4(X, Y, Z, number), W);
                 indices_list.Add(W + 2);
                 indices_list.Add(W + 1);
                 indices_list.Add(W + 3);
@@ -249,6 +250,13 @@ namespace Game3
                 indices_list.Add(W + 1);
             }
         }
+        public void Initialize(Dictionary<IVector3, int> _blocklist)
+        {
+            blockList = _blocklist;
+            //vertices_Number.Remove(vertices_Number.Last().Key);
+            vertices_Arry = vertices_list.ToArray();
+            indices_Arry = indices_list.ToArray();
+        }
         public void BreakBlock(int X,int Y,int Z)
         {
             ///XYZのブロックを消す
@@ -256,22 +264,53 @@ namespace Game3
             /// 点を消す代わりに後ろから持ってくる
             /// 後ろを消す
             /// インデックスも後ろの６個を消す
+            /// うまくいかない
             for (int i = 1; i < 7; i++)
             {
                 ///これが消そうとする面の座標
                 if (vertices_Number.ContainsKey(new IVector4(X, Y, Z, i)))
                 {
-                    int a = vertices_Number[new IVector4(X, Y, Z, i)];
-                    int b = vertices_list.Count() - 4;
-                    vertices_list[a] = vertices_list[b];
-                    vertices_list[a + 1] = vertices_list[b + 1];
-                    vertices_list[a + 2] = vertices_list[b + 2];
-                    vertices_list[a + 3] = vertices_list[b + 3];
-                    vertices_list.RemoveAt(b);
-                    vertices_list.RemoveAt(b);
-                    vertices_list.RemoveAt(b);
-                    vertices_list.RemoveAt(b);
-                    vertices_Number[new IVector4(X, Y, Z, i)] = 
+                    //if (i != 3 && i != 2&& i != 1) return;
+                    //何番目の点なのかを確認
+                    int number = vertices_Number[new IVector4(X, Y, Z, i)];
+                    //一番後ろから移動させてRemoveする
+                    
+                    vertices_list[number + 3] = vertices_list.Last();
+                    vertices_list.RemoveAt(vertices_list.Count()-1);
+
+                    vertices_list[number + 2] = vertices_list.Last();
+                    vertices_list.RemoveAt(vertices_list.Count()-1);
+
+                    vertices_list[number + 1] = vertices_list.Last();
+                    vertices_list.RemoveAt(vertices_list.Count()-1);
+
+                    vertices_list[number] = vertices_list.Last();
+                    vertices_list.RemoveAt(vertices_list.Count()-1);
+                    //何番目の点の番号だけを一番最後のやつに移して
+                    //何番目の点の配列をremoveする
+                    indices_list.RemoveAt(indices_list.Count - 1);
+                    indices_list.RemoveAt(indices_list.Count - 1);
+                    indices_list.RemoveAt(indices_list.Count - 1);
+                    indices_list.RemoveAt(indices_list.Count - 1);
+                    indices_list.RemoveAt(indices_list.Count - 1);
+                    indices_list.RemoveAt(indices_list.Count - 1);
+                    //同じじゃない
+                    //if (new IVector4(X, Y, Z, i) == vertices_Number.Last().Key) return;
+                    //あとでここのラストキーを調べる
+                    //if(vertices_Number[vertices_Number.Last().Key]> number)
+                    //{
+                        vertices_Number[vertices_Number.Last().Key] = number;
+                        vertices_Number.Remove(new IVector4(X, Y, Z, i));
+                   // }
+                    //else
+                    //{
+                    //    vertices_Number[new IVector4(X, Y, Z, i)] = vertices_Number.Last().Value;
+                    //    vertices_Number.Remove(vertices_Number.Last().Key);
+                    //}
+                    //iが3のとき最後のきーが５
+                    vertices_Arry = vertices_list.ToArray();
+                    indices_Arry = indices_list.ToArray();
+                    
                 }
             }
 

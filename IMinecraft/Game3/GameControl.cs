@@ -85,7 +85,7 @@ namespace Game3
                 }
                 ChankList[chank].Initialize(Initialize_blockList);
             }
-            ChankList.Remove(chanklist[0]);
+            //ChankList.Remove(chanklist[0]);
         }
         public void LoadContent(GraphicsDevice graphicsDevice)
         {
@@ -169,7 +169,7 @@ namespace Game3
                 ///これを動作させられるようにする
                 if (ChankList.ContainsKey(new IVector2(chank_x, chank_z)))
                 {
-                    //ChankList[new IVector2(chank_x, chank_z)].BreakBlock(pmx, pmy, pmz);
+                    ChankList[new IVector2(chank_x, chank_z)].BreakBlock(pmx, pmy, pmz);
                     //////////////////////////////////////////////////////////////////////
                     //2番目のやつ
                     //最終的に消す処理だから
