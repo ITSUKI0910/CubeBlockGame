@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>P:/ゲーム製作/IMinecraft/IMinecraft/Game3/Content/stone_6.png</SourceFile>
-  <SourceTime>2018-12-07T21:30:47.7196005+09:00</SourceTime>
-  <DestFile>P:/ゲーム製作/IMinecraft/IMinecraft/Game3/Content/bin/Windows/stone_6.xnb</DestFile>
-  <DestTime>2018-12-12T22:57:36.1262004+09:00</DestTime>
+  <SourceFile>D:/ゲーム制作/CubeGame/IMinecraft/Game3/Content/stone_6.png</SourceFile>
+  <SourceTime>2018-11-27T10:56:10+09:00</SourceTime>
+  <DestFile>D:/ゲーム制作/CubeGame/IMinecraft/Game3/Content/bin/Windows/stone_6.xnb</DestFile>
+  <DestTime>2018-12-13T10:20:10.9358284+09:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-02T00:05:36+09:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

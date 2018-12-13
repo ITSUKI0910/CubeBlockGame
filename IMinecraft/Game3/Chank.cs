@@ -22,6 +22,8 @@ namespace Game3
         private LinkedList<int> indices_list = new LinkedList<int>();
         private VertexPositionTexture[] vertices_Arry;
         private int[] indices_Arry;
+        private int vertices_Size = 0;
+        private int indices_Size = 0;
         ///座標とどの面なのかがわかる
         public void Add(int X, int Y, int Z, int number)
         {
@@ -92,6 +94,8 @@ namespace Game3
         {
             vertices_Arry = vertices_list.Values.ToArray();
             indices_Arry = indices_list.ToArray();
+            vertices_Size = vertices_Arry.Length;
+            indices_Size = indices_Arry.Length/3;
         }
         public void BreakBlock(int X,int Y,int Z)
         {
@@ -121,11 +125,10 @@ namespace Game3
                 PrimitiveType.TriangleList,
                 vertices_Arry,
                 0,
-                vertices_Arry.Length,
+                vertices_Size,
                 indices_Arry,
                 0,
-                indices_Arry.Length / 3);
-
+                indices_Size);
         }
     }
 }

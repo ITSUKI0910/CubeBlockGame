@@ -162,10 +162,28 @@ namespace Game3
                 int pmx = (int)Math.Truncate(b.X);//上下
                 int pmy = (int)Math.Truncate(b.Y);
                 int pmz = (int)Math.Truncate(b.Z);//左右
-                double c_x = pmx / 16;
-                double c_z = pmz / 16;
+                double c_x = 0;
+                double c_z = 0;
+                if (0< pmx)
+                {
+                    c_x = pmx / 16;
+                }
+                else
+                {
+                    if (pmx / 16 == 0) c_x = -16;else c_x = (pmx / 16) * -1;
+                }
+                if (0 < pmz)
+                {
+                    c_z = pmz / 16;
+                }
+                else
+                {
+                    if (pmx / 16 == 0) c_z = -16;else c_z = (pmz / 16) * -1;
+                }
                 int chank_x = (int)Math.Truncate(c_x) * 16;
                 int chank_z = (int)Math.Truncate(c_z) * 16;
+                //マイナスを16で割ると16に行かずに
+                //０になる問題
                 ///これを動作させられるようにする
                 if (ChankList.ContainsKey(new IVector2(chank_x, chank_z)))
                 {
