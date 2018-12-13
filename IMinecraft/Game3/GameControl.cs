@@ -164,6 +164,7 @@ namespace Game3
                 int pmz = (int)Math.Truncate(b.Z);//左右
                 double c_x = 0;
                 double c_z = 0;
+
                 if (0< pmx)
                 {
                     c_x = pmx / 16;
